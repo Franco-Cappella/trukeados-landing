@@ -3,6 +3,9 @@
 // Todo número mágico de reglas, tiempos o rutas va acá: si lo cambiás, cambia en los dos lados.
 // No importa nada ni toca el DOM.
 
+// ------------------------------------------------------------------ marca
+export const APP_NAME = 'Trukeados';
+
 // ------------------------------------------------------------------ partida
 export const MODES = { '1v1': 2, '2v2': 4, '3v3': 6 };
 export const DEFAULT_MODE = '1v1';
@@ -55,8 +58,8 @@ export const SENAS = {
   siete_espada: { label: 'Siete de espada', expr: 'mouthRight', desc: 'Torcer la boca a la derecha' },
   siete_oro: { label: 'Siete de oro', expr: 'mouthLeft', desc: 'Torcer la boca a la izquierda' },
   tres: { label: 'Un tres', expr: 'bite', desc: 'Morderse el labio' },
-  dos: { label: 'Un dos', expr: 'kiss', desc: 'Trompita' },
-  ancho_falso: { label: 'Ancho falso', expr: 'tongue', desc: 'Asomar la punta de la lengua' },
+  dos: { label: 'Un dos', expr: 'kiss', desc: 'Tirar un beso (trompita bien marcada)' },
+  ancho_falso: { label: 'Ancho falso', expr: 'open', desc: 'Abrir la boca' },
   ciego: { label: 'Nada (ciego)', expr: 'eyesClosed', desc: 'Cerrar los ojos' },
   envido_alto: { label: 'Tengo envido', expr: 'puff', desc: 'Inflar los cachetes' },
   treinta: { label: '30 o más de envido', expr: 'nose', desc: 'Fruncir la nariz' },
@@ -64,8 +67,21 @@ export const SENAS = {
 };
 export const SENA_MS = 2200; // cuánto dura la cara de una seña
 
-export const BOT_NAMES = ['Tito', 'Coca', 'El Ruso', 'Chacho', 'Pocha', 'Beto', 'Nené', 'Cacho', 'Mirta', 'Pirulo', 'Tota', 'Rulo'];
+export const BOT_NAMES = ['Tito', 'Coca', 'El Ruso', 'Chacho', 'Pocha', 'Beto', 'Nené', 'Cacho', 'Mirta', 'Pirulo', 'Tota', 'Rulo', 'Sancho', 'Volcho', 'Olcho', 'Carlitos', 'Tronco'];
 
 // ------------------------------------------------------------------ validación
 export const PID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 export const CODE_RE = /^[A-Z0-9]{5}$/;
+
+// ------------------------------------------------------------------ opciones de la sala
+// Una sola lista para el servidor, el menú y la sala de espera. `invert`: el checkbox dice lo contrario
+// del valor (ej.: "No permitir trampas" marcado = trampas: false).
+export const ROOM_OPTIONS = [
+  { key: 'flor', def: false, label: 'Jugar con flor', short: 'con flor' },
+  { key: 'muestra', def: false, label: 'Jugar con muestra (las piezas del palo de la carta dada vuelta son las más altas)', short: 'con muestra' },
+  { key: 'trampas', def: true, invert: true, label: 'No permitir trampas (ej.: encimar cartas o mentir en el envido)', short: 'sin trampas' },
+];
+// Opciones válidas a partir de lo que mande el cliente (lo que falte o no sea booleano, por defecto).
+export const roomOptions = (src) => Object.fromEntries(ROOM_OPTIONS.map((o) => [o.key, typeof src?.[o.key] === 'boolean' ? src[o.key] : o.def]));
+// Texto corto para mostrar las opciones activas ("con flor · sin trampas").
+export const roomOptionsText = (cfg) => ROOM_OPTIONS.filter((o) => cfg[o.key] !== o.def).map((o) => o.short).join(' · ');

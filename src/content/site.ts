@@ -122,7 +122,7 @@ const sections: Section[] = [
     id: 'mesas',
     title: 'De a dos, de a cuatro o de a seis.',
     body: [
-      '1 vs 1, 2 vs 2 y 3 vs 3. A 15 o a 30 puntos, sin flor.',
+      '1 vs 1, 2 vs 2 y 3 vs 3. A 15 o a 30 puntos, con flor o sin flor.',
       'Si se te corta, un bot juega por vos hasta que volvés.',
     ],
     weight: 1.5,

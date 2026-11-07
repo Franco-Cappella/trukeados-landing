@@ -59,7 +59,7 @@ export function feltTexture() {
     ctx.fillStyle = SCENE.feltInk;
     ctx.font = `600 46px ${CANVAS_FONT}`;
     ctx.textAlign = 'center';
-    ctx.fillText('Trukeados', w / 2, h / 2 + 14);
+    ctx.fillText(SCENE.feltName, w / 2, h / 2 + 14); // el nombre del juego (APP_NAME), como en el paño del juego
   });
 }
 

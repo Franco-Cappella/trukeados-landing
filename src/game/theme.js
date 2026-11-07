@@ -1,4 +1,6 @@
 // COPIA de public/js/theme.js (truco3D). No editar acá: cambiar el juego y correr "npm run sync".
+import { APP_NAME } from './config.js';
+
 // Colores que usa el JavaScript del cliente (escena 3D, personajes, manos, anotador).
 // Los colores de la interfaz HTML están en public/css/truco.css (variables en :root).
 // Si cambiás la paleta, tocá los dos lados para que todo combine.
@@ -36,7 +38,7 @@ export const SCENE = {
   ],
   felt: ['#2e7344', '#225a35', '#1a4529'], // centro -> borde del paño
   feltInk: 'rgba(255,255,255,0.12)',
-  feltName: 'Truco 3D',
+  feltName: APP_NAME, // lo que está escrito en el paño
   wood: '#5b3418',
   woodDark: '#8a6a55',
   chair: '#4a2a14',
@@ -72,6 +74,15 @@ export const SCORE = {
   stick: '#f5f5f5',
   stickOff: 'rgba(255,255,255,0.08)',
   rule: 'rgba(255,255,255,0.4)',
+};
+
+// Colores de la boca de los personajes (señas y hablar).
+export const FACE = {
+  mouthInside: '#4a1f1b',
+  teeth: '#efe9de',
+  tongue: '#d46a72',
+  kissLip: '#c24f58', // labios del beso: más rojos para que la seña se note
+  wrinkle: 'rgba(70,35,25,0.5)',
 };
 
 // Paletas de los personajes (tonos de piel, pelo y ropa reales). Cada piel: [luz, sombra].
