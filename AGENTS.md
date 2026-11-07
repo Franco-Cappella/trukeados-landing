@@ -28,8 +28,10 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 
 ## Comandos
 
-- `npm run dev`, `npm run build` (incluye `tsc`), `npm run preview`. Al construir para publicar:
-  `VITE_GAME_URL` y `VITE_SITE_URL` (ver `.env.example`).
+- `npm run dev`, `npm run build` (incluye `tsc`), `npm run preview`. `VITE_GAME_URL` y `VITE_SITE_URL` son
+  opcionales: por defecto, `https://game.trukeados.com` y `https://trukeados.com/` (ver `.env.example`).
+- Publicación: Cloudflare Workers (`wrangler.jsonc`, solo archivos estáticos de `dist/`). Cloudflare construye
+  con `npm run build` y publica con `npx wrangler deploy` en cada push a `main`.
 - `npm run sync`: copia lo que viene del juego.
 - `npm run capture -- estudios`, `landing` o `director`: capturas en `docs/estudios/` y `docs/capturas/`.
   Requiere `npm run build && npm run preview` corriendo en el puerto 4173. `director` además prueba que la

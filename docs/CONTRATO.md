@@ -4,7 +4,7 @@ Fase 2 de la skill `web-inmersiva`: brief, nivel, mapa de secciones, biblia de e
 dirección.
 
 **Aprobado el 2026-11-06.** Dirección elegida: **A como mundo, con momentos de C y de B** (sección 5).
-La URL pública del juego queda pendiente: se completa en `.env` cuando esté (`TODO(contenido)`).
+El juego está en `https://game.trukeados.com` y la landing en `https://trukeados.com` (2026-11-07).
 
 Marca: [brand/BRAND.md](brand/BRAND.md) y [brand/PAGINAS.md](brand/PAGINAS.md) (copias del juego).
 Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco3D`.
@@ -20,7 +20,7 @@ Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco
 | Fuente del contenido | El juego: reglas, señas, modos y tiempos reales. Sin métricas, testimonios, logos ni citas inventadas. |
 | Dónde se ve | Celular primero, escritorio después. Importa el SEO y cómo se ve el link en WhatsApp (título, descripción, imagen). |
 | Proyecto | Nuevo: `repository/truco3D-landing`, React 19 + Vite + TypeScript, R3F + GSAP + Lenis. |
-| Pendiente | `TODO(contenido)`: la URL pública del juego. Mientras tanto, `http://localhost:8787`. |
+| URLs | Juego: `https://game.trukeados.com`. Landing: `https://trukeados.com`. Las dos en Cloudflare Workers. |
 
 ## 2. Nivel: 3, mundo de scroll
 
@@ -266,9 +266,12 @@ aislados de unos 100 ms, que pueden notarse como un salto).
 
 ### Publicación
 
-- Es un sitio estático: `npm run build` deja todo en `dist/` (cualquier hosting estático: Vercel, Netlify,
-  Cloudflare Pages). No hace falta reescritura de rutas: es una sola página.
+- Es un sitio estático: `npm run build` deja todo en `dist/`. Se publica en Cloudflare Workers, solo con
+  archivos estáticos (`wrangler.jsonc`), desde `main` (antes estaba en Vercel). No hace falta reescritura de
+  rutas: es una sola página.
 - Variables al construir: `VITE_GAME_URL` (la dirección del juego, la usan todos los botones "Jugar") y
-  `VITE_SITE_URL` (la de la landing, con barra al final). Las dos están pendientes: TODO(contenido).
-- Caché: `assets/` lleva el hash en el nombre (se puede cachear un año, `immutable`); `index.html`, sin caché.
+  `VITE_SITE_URL` (la de la landing, con barra al final). Sin definir, el build usa `https://game.trukeados.com`
+  y `https://trukeados.com/`.
+- Caché: `assets/` lleva el hash en el nombre y se cachea un año, `immutable` (`public/_headers`); `index.html`,
+  sin caché.
 

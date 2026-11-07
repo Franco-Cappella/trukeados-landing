@@ -34,7 +34,8 @@ function html(site: string): Plugin {
 }
 
 export default defineConfig(({ mode }) => {
-  const site = loadEnv(mode, '.', 'VITE_').VITE_SITE_URL ?? '';
+  // Sin VITE_SITE_URL, el build de producción usa el dominio publicado.
+  const site = loadEnv(mode, '.', 'VITE_').VITE_SITE_URL || (mode === 'production' ? 'https://trukeados.com/' : '');
   return {
     plugins: [react(), html(site)],
     server: { port: 5173 },
