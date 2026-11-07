@@ -42,7 +42,8 @@ const CACHO = 1;
 const TITO = 2;
 const PLATES = [COCA, CACHO, TITO]; // los que te miran al final
 const PLATE_Y = 1.74; // la placa, apenas arriba de la cabeza (la cabeza dibujada termina en ~1,65 m)
-const PLATE_MARGIN = { x: 76, top: 76, bottom: 24 }; // la placa nunca se sale de la pantalla ni queda bajo la barra
+// La placa se ubica por su centro: arriba, la barra (hasta 64 px), 8 px de aire y la mitad de la placa (unos 15 px).
+const PLATE_MARGIN = { x: 76, top: 88, bottom: 24 }; // la placa nunca se sale de la pantalla ni queda bajo la barra
 const plateAt = new Vector3();
 
 /** Las placas son HTML sobre el canvas (como en el juego): se crean a mano dentro del escenario y se ubican en

@@ -201,7 +201,7 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 | 5. Director de scroll y escena gris | Hecha |
 | 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Hecha |
 | 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te mira", niveles de calidad, pósters de la versión sin 3D, entrada de la escena, celular acostado | Hecha |
-| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | En revisión |
+| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Hecha |
 
 ### Verificación (fase 8)
 
@@ -234,6 +234,20 @@ corridas del build final, con la mediana y el rango.
 
 Pendiente en un celular real: el INP y los picos de redibujo (con la CPU 4 veces más lenta hubo picos
 aislados de unos 100 ms, que pueden notarse como un salto).
+
+### Revisión final y cierre (2026-11-07)
+
+- Última pasada con `impeccable`: el detector sobre `src/` e `index.html`, y las capturas del director en
+  escritorio, tablet y celular. Se corrigió:
+  - Las placas de Tito y de Coca quedaban bajo la barra de navegación en escritorio (el borde superior estaba en
+    y = 61 y la barra llega a 64). Como la placa se ubica por su centro, el margen superior pasó de 76 a 88 px.
+    Medido en 1440, 390 y 844 x 390: ninguna placa tapada.
+  - La selección de texto es oro con tinta oscura, como los botones.
+- Excepción registrada en `.impeccable/config.json`: `side-tab` solo en `src/styles/landing.css`. Es el borde de
+  equipo de la placa de nombre, que define `docs/brand/COMPONENTES.md` §6. El detector queda en cero hallazgos.
+- Landing cerrada. Queda fuera de esta fase: probar en un celular real (INP y picos al redibujar personajes),
+  definir `VITE_GAME_URL` y `VITE_SITE_URL` (dominio), y la decisión del juego (merge de `marca-y-landing` y
+  `docs/landing/PLAN.md`).
 
 ### Publicación
 

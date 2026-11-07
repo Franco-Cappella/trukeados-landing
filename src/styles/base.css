@@ -18,6 +18,12 @@ html {
   color-scheme: dark;
 }
 
+/* La selección de texto también es de la marca: el oro, con la tinta oscura de los botones. */
+::selection {
+  background: var(--oro);
+  color: var(--accent-ink);
+}
+
 body {
   margin: 0;
   background: var(--bg);
