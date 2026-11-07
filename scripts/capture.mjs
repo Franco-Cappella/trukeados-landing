@@ -97,11 +97,17 @@ async function director() {
       }
     };
     const files = [];
+    const cost = { calls: 0, tris: 0 };
     // Ida: captura y prueba cada sección.
     for (const [i, s] of ends.entries()) {
       await evaluate(`scrollTo(0, ${s.end})`);
       await sleep(2600);
       await check(i, 'ida');
+      const info = await evaluate('window.__gl ? { calls: __gl.info.render.calls, tris: __gl.info.render.triangles } : null');
+      if (info) {
+        cost.calls = Math.max(cost.calls, info.calls);
+        cost.tris = Math.max(cost.tris, info.tris);
+      }
       const r = await send('Page.captureScreenshot', { format: 'png' });
       const file = path.join(outDir, 'capturas', 'director', `${vp.name}-${i + 1}-${s.id}.png`);
       fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -134,7 +140,7 @@ async function director() {
     await evaluate(`scrollTo(0, ${ends[mid].end})`);
     await sleep(300);
     await check(mid, 'salto al medio');
-    console.log(`director ${vp.name}: ${ends.length} secciones`, errors.length ? `· errores: ${errors.slice(0, 3).join(' | ')}` : '· sin errores');
+    console.log(`director ${vp.name}: ${ends.length} secciones · máx. ${cost.calls} draw calls y ${Math.round(cost.tris / 1000)} k triángulos`, errors.length ? `· errores: ${errors.slice(0, 3).join(' | ')}` : '· sin errores');
     await contactSheet(vp, files);
   }
   // Movimiento reducido: la cámara salta de sección en sección (canvas a pedido) y cada estado es el final.

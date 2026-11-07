@@ -254,6 +254,15 @@ function TableProps({ R }: { R: number }) {
 export function Chair({ seat, n, R }: { seat: number; n: number; R: number }) {
   const [dx, , dz] = seatDir(seat, n);
   const r = R + 0.5;
+  return (
+    <group position={[dx * r, 0, dz * r]} rotation={[0, seatAngle(seat, n), 0]}>
+      <ChairModel />
+    </group>
+  );
+}
+
+/** La silla sola, en el origen y con el respaldo hacia +z (afuera de la mesa). */
+export function ChairModel() {
   const legs: [number, number][] = [
     [-0.2, -0.19],
     [0.2, -0.19],
@@ -261,7 +270,7 @@ export function Chair({ seat, n, R }: { seat: number; n: number; R: number }) {
     [0.2, 0.19],
   ];
   return (
-    <group position={[dx * r, 0, dz * r]} rotation={[0, seatAngle(seat, n), 0]}>
+    <group>
       <mesh position={[0, 0.46, 0]}>
         <boxGeometry args={[0.46, 0.05, 0.44]} />
         <meshStandardMaterial color={SCENE.chair} roughness={0.6} />

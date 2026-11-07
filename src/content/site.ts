@@ -23,6 +23,7 @@ export type SceneFx = {
   closeup: number; // se ilumina la cara del primer plano
   sena: number; // recorrido por las 11 señas (0 la primera, 1 la última)
   gaze: number; // se ve quién mira a quién
+  played: number; // tus dos cartas encimadas caen en el paño
   burn: number; // la carta de arriba se levanta, quemada, y deja ver la de abajo
   six: number; // la mesa pasa de cuatro a seis lugares
   seated: number; // sentado en tu silla: todos te miran
@@ -110,7 +111,7 @@ const sections: Section[] = [
     // Baja casi a pique sobre tus cartas jugadas (vista cenital del estudio B).
     camera: { position: [0.1, 1.42, 0.98], target: [0, 0.745, 0.589], fov: 38 },
     cameraPortrait: { position: [0.034, 1.33, 0.973], target: [0, 0.745, 0.589], fov: 56, frame: [0, 0.22] },
-    fxIn: { gaze: 0 },
+    fxIn: { gaze: 0, played: 1 },
     fx: { burn: 1 },
     figure: {
       poster: '',
@@ -129,7 +130,7 @@ const sections: Section[] = [
     // Sube casi hasta el techo: la mesa entera, entera a la derecha del texto.
     camera: { position: [0.6, 3.95, 3.4], target: [0, 0.9, 0], fov: 56, frame: [0.25, 0.02] },
     cameraPortrait: { position: [0, 3.95, 3.0], target: [0, 1.0, 0], fov: 80, frame: [0, 0.2] },
-    fxIn: { burn: 0 },
+    fxIn: { burn: 0, played: 0 },
     fx: { six: 1 },
     figure: { poster: '', alt: 'La mesa vista desde arriba, con lugar para seis jugadores.' },
   },

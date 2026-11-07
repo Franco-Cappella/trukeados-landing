@@ -36,7 +36,7 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
   tocar cámaras, `weight` o efectos.
 - `npm run encuadres [id]`: dónde cae cada cosa del bar en pantalla con las cámaras de `site.ts`, sin
   renderizar. Sirve para ajustar una cámara antes de sacar capturas.
-- `?debug` en la URL: estado del director en pantalla.
+- `?debug` en la URL: estado del director en pantalla. `?gris`: la escena gris en lugar del bar.
 
 ## Estructura
 
@@ -47,7 +47,8 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 - `src/state/`: estado discreto (sección, nivel de calidad, versión sin 3D, `?debug`).
 - `src/ui/`: capa de contenido (HTML). Nunca importa `three` ni `@react-three/*`.
 - `src/three/`: escena 3D, en `lazy()`. `Experience.tsx` (canvas fijo), `CameraRig.tsx` (cámara y encuadre),
-  `gray/` (escena gris de la fase 5) y `bar/` (piezas del bar con las medidas del juego).
+  `world/` (el bar del recorrido: escena, personajes y cartas de la trampa), `bar/` (piezas del bar con las
+  medidas del juego) y `gray/` (escena gris de la fase 5, con `?gris`).
 - `src/studies/`: los tres estudios de dirección (`?estudio=a|b|c`), en un paquete aparte.
 
 ## Al cerrar cualquier cambio de interfaz

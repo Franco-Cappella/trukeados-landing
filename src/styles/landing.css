@@ -231,6 +231,20 @@ footer {
   line-height: 1.3;
 }
 
+/* La seña que está haciendo la cara del primer plano: las demás se apagan un poco. */
+.senas__item {
+  transition: opacity var(--dur-quick) var(--ease-out);
+}
+
+.senas:has([data-activa]) .senas__item:not([data-activa]) {
+  opacity: 0.45;
+}
+
+.senas__item[data-activa] .face {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
 /* ---------- nombre: lo interactivo ---------- */
 .nombre {
   display: grid;

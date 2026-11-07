@@ -1,8 +1,9 @@
 // Estudios de dirección (fase 2). Se cargan aparte, solo con `?estudio=a|b|c`.
 import '../styles/estudios.css';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { GAME_URL } from '../content/links';
+import { useFontsReady } from '../three/useFontsReady';
 import type { StudyId } from './route';
 import { StudyA } from './StudyA';
 import { StudyB } from './StudyB';
@@ -27,22 +28,6 @@ const COPY: Record<StudyId, { nombre: string; titulo: string; bajada: string }> 
     bajada: 'Cacho guiña un ojo: ancho de basto. La seña solo la ve quien lo está mirando.',
   },
 };
-
-/** El paño y los cuadros escriben con Archivo en canvas: se espera a que la fuente esté cargada. */
-function useFontsReady() {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    let alive = true;
-    Promise.all([
-      document.fonts.load("600 46px 'Archivo Variable'"),
-      document.fonts.load("700 28px 'Archivo Variable'"),
-    ]).finally(() => alive && setReady(true));
-    return () => {
-      alive = false;
-    };
-  }, []);
-  return ready;
-}
 
 export function Study({ id }: { id: StudyId }) {
   const Scene = SCENES[id];

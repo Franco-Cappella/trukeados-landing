@@ -197,10 +197,13 @@ export function GrayBar() {
     // Trampa: la carta de arriba se levanta, se corre y se quema; la de abajo queda en el paño.
     const b = fx.burn;
     const kz = R * PLAY_R;
-    cardBottom.current?.position.set(0, TABLE_Y + 0.002, kz);
+    const drop = (1 - fx.played) * 0.4; // caen al paño al llegar a la trampa
+    if (cardBottom.current) cardBottom.current.visible = fx.played > 0.01;
+    if (cardTop.current) cardTop.current.visible = fx.played > 0.01;
+    cardBottom.current?.position.set(0, TABLE_Y + 0.002 + drop, kz);
     if (cardTop.current && cardTopMat.current) {
       // Se corre poco de costado (en celular el cuadro es angosto) y más hacia el fondo, que en pantalla es arriba.
-      cardTop.current.position.set(0.09 * b, TABLE_Y + 0.006 + 0.05 * b + 0.05 * Math.sin(Math.PI * b), kz - 0.06 * b);
+      cardTop.current.position.set(0.09 * b, TABLE_Y + 0.006 + drop * 1.15 + 0.05 * b + 0.05 * Math.sin(Math.PI * b), kz - 0.06 * b);
       cardTop.current.rotation.set(0, -0.3 * b, 0.35 * b);
       cardTopMat.current.color.copy(GRAY.card).lerp(GRAY.burnt, b);
     }

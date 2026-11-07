@@ -3,7 +3,7 @@ import { lens, site, type SceneFx, type Shot } from '../content/site';
 // Estado CONTINUO de la escena. Solo el director de scroll (useStoryTimeline) lo escribe, con GSAP; las
 // escenas lo leen en useFrame. Nunca pasa por React. No importa three: la capa DOM también lo usa.
 
-export const ZERO: SceneFx = { dim: 0, closeup: 0, sena: 0, gaze: 0, burn: 0, six: 0, seated: 0 };
+export const ZERO: SceneFx = { dim: 0, closeup: 0, sena: 0, gaze: 0, played: 0, burn: 0, six: 0, seated: 0 };
 
 /** Cámara aplanada para tweenear: posición, objetivo, campo vertical y dónde cae el objetivo en pantalla. */
 export type Cam = { px: number; py: number; pz: number; tx: number; ty: number; tz: number; fov: number; ox: number; oy: number };

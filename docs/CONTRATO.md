@@ -153,9 +153,18 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
   `src/studies/` y cargan aparte (`?estudio=a|b|c`).
 - El director de scroll (`src/scroll/useStoryTimeline.ts`) es lo único que escribe en `rig`: la cámara viaja
   en la llegada de cada sección y los efectos cambian según la coreografía (sección 3).
-- `src/three/Experience.tsx` es el canvas fijo, en `lazy()`: la capa DOM no importa three. Hoy dibuja la escena
-  gris (`src/three/gray/GrayBar.tsx`), que en la fase 6 se reemplaza por el bar.
-- Pesos: la landing, 131 KB gzip (límite 150); el paquete 3D, 250 KB gzip (límite 350).
+- `src/three/Experience.tsx` es el canvas fijo, en `lazy()`: la capa DOM no importa three. Dibuja el bar
+  (`src/three/world/World.tsx`), con la exposición de luz del juego.
+- Los personajes (`src/three/world/cast.ts`) son los recortes del juego: miran siempre a la cámara, el cuerpo
+  apunta al centro de la mesa y la cabeza a quien miran, con los mismos ángulos que `scene.js`. Se redibujan
+  solo cuando cambia la pose o la cara, como mucho dos por cuadro. Cacho se dibuja al doble de resolución
+  para el primer plano.
+- Mientras Cacho hace las señas, la leyenda marca la que está haciendo (`ui/SenasList.tsx` lee `rig`).
+- La carta quemada en primer plano usa bordes carbonizados sin brasas (`charredTexture`), como la versión
+  sin 3D: las brasas del juego, a ese tamaño y bajo la lámpara, se veían como manchas naranjas.
+- `?gris` muestra la escena gris de la fase 5 (`src/three/gray/`), para ajustar tiempos sin el arte.
+- Pesos: la landing, 131 KB gzip (límite 150); el paquete 3D, 255 KB gzip (límite 350). Como mucho 64 draw
+  calls y 10 mil triángulos por cuadro (límites 150 y 500 mil).
 - `npm run encuadres` calcula, sin renderizar, dónde cae cada cara, la mesa y las cartas en 1440, 768 y 390, y
   avisa si algo queda debajo del texto o fuera del cuadro.
 - Capturas: `npm run build && npm run preview`, y en otra terminal `npm run capture -- director` (o `estudios`,
@@ -169,10 +178,12 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 |---|---|
 | 3. Base | Hecha |
 | 4. Esqueleto HTML | Hecha |
-| 5. Director de scroll y escena gris | En revisión |
-| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Pendiente |
-| 7. Efectos, niveles de calidad y respaldos: postprocesado solo en el nivel alto, pósters de la versión sin 3D, entrada de la escena | Pendiente |
+| 5. Director de scroll y escena gris | Hecha |
+| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | En revisión |
+| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te miran", postprocesado solo en el nivel alto, pósters de la versión sin 3D, entrada de la escena, celular acostado | Pendiente |
 | 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Pendiente |
 
-Anotado para la fase 7: con el celular acostado (844 × 390) los paneles de señas y de tu nombre no entran en el
-alto de la pantalla.
+Anotado para la fase 7:
+- Con el celular acostado (844 × 390) los paneles de señas y de tu nombre no entran en el alto de la pantalla.
+- El instante dorado: cuando los tres te miran (sección 7), algo en oro tiene que decir que te están mirando.
+- Medir en un celular real cuánto cuesta redibujar los personajes mientras la cámara viaja.

@@ -165,6 +165,31 @@ export function burnTexture() {
   });
 }
 
+/** Carta quemada vista de cerca (la trampa en primer plano): bordes carbonizados y manchas oscuras, como la
+ *  versión sin 3D (landing.css). burnTexture tiene brasas que, a ese tamaño y bajo la lámpara, parecen
+ *  manchas naranjas; acá la brasa queda apenas como un borde tenue. */
+export function charredTexture() {
+  return canvasTexture(256, 394, (ctx, w, h) => {
+    const edge = ctx.createRadialGradient(w / 2, h / 2, w * 0.18, w / 2, h / 2, h * 0.62);
+    edge.addColorStop(0, 'rgba(0,0,0,0)');
+    edge.addColorStop(0.5, 'rgba(0,0,0,0)');
+    edge.addColorStop(0.66, 'rgba(214,96,28,0.16)');
+    edge.addColorStop(0.8, 'rgba(28,14,6,0.86)');
+    edge.addColorStop(1, 'rgba(28,14,6,0.96)');
+    ctx.fillStyle = edge;
+    ctx.fillRect(0, 0, w, h);
+    for (const [x, y, r] of [[40, 60, 34], [222, 118, 26], [196, 340, 40], [56, 300, 24], [140, 24, 22]]) {
+      const g = ctx.createRadialGradient(x, y, 2, x, y, r);
+      g.addColorStop(0, 'rgba(28,14,6,0.9)');
+      g.addColorStop(1, 'rgba(28,14,6,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+}
+
 /** Personaje entero dibujado con el código del juego (characters.js). */
 export function characterTexture(name: string, seat: number, state: Record<string, unknown>) {
   const look = lookFor(name, seat);
