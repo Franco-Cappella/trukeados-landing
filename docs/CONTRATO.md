@@ -20,7 +20,7 @@ Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco
 | Fuente del contenido | El juego: reglas, señas, modos y tiempos reales. Sin métricas, testimonios, logos ni citas inventadas. |
 | Dónde se ve | Celular primero, escritorio después. Importa el SEO y cómo se ve el link en WhatsApp (título, descripción, imagen). |
 | Proyecto | Nuevo: `repository/truco3D-landing`, React 19 + Vite + TypeScript, R3F + GSAP + Lenis. |
-| URLs | Juego: `https://game.trukeados.com`. Landing: `https://trukeados.com`. Las dos en Cloudflare Workers. |
+| URLs | Juego: `https://game.trukeados.com`. Landing: `https://trukeados.com`. La landing en Vercel y el juego en Cloudflare Workers. |
 
 ## 2. Nivel: 3, mundo de scroll
 
@@ -266,12 +266,11 @@ aislados de unos 100 ms, que pueden notarse como un salto).
 
 ### Publicación
 
-- Es un sitio estático: `npm run build` deja todo en `dist/`. Se publica en Cloudflare Workers, solo con
-  archivos estáticos (`wrangler.jsonc`), desde `main` (antes estaba en Vercel). No hace falta reescritura de
+- Es un sitio estático: `npm run build` deja todo en `dist/`. Se publica en Vercel desde `main`. No hace falta reescritura de
   rutas: es una sola página.
 - Variables al construir: `VITE_GAME_URL` (la dirección del juego, la usan todos los botones "Jugar") y
   `VITE_SITE_URL` (la de la landing, con barra al final). Sin definir, el build usa `https://game.trukeados.com`
   y `https://trukeados.com/`.
-- Caché: `assets/` lleva el hash en el nombre y se cachea un año, `immutable` (`public/_headers`); `index.html`,
+- Caché: `assets/` lleva el hash en el nombre y se cachea un año, `immutable` (`vercel.json`); `index.html`,
   sin caché.
 

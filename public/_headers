@@ -1,3 +1,0 @@
-# Cloudflare Workers (archivos estáticos). Los de assets/ llevan el hash en el nombre: no cambian nunca.
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable

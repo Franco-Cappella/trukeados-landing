@@ -11,8 +11,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "capture": "node scripts/capture.mjs",
-    "encuadres": "node scripts/encuadres.ts",
-    "deploy": "npm run build && wrangler deploy"
+    "encuadres": "node scripts/encuadres.ts"
   },
   "engines": {
     "node": ">=22"
@@ -36,7 +35,6 @@
     "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^6.2.1",
     "typescript": "~5.9.0",
-    "vite": "^8.3.6",
-    "wrangler": "^4.157.0"
+    "vite": "^8.3.6"
   }
 }
