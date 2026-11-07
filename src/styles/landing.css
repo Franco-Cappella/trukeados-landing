@@ -1,0 +1,486 @@
+/* Landing: escena 3D fija detrás de todo, navegación, secciones con el texto fijo sobre la escena, señas,
+   nombre, trampa y pie. Lo que se lee es HTML real; el canvas es decorativo. */
+
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: var(--gutter);
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  background: var(--oro);
+  color: var(--accent-ink);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+/* ---------- escena: canvas fijo, detrás del contenido ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- navegación: logo, tres enlaces y una acción ---------- */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  background: var(--bg);
+}
+
+.nav__logo img {
+  width: auto;
+  height: 28px;
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--space-5);
+  margin-left: auto;
+}
+
+.nav__links a {
+  color: var(--text-dim);
+  font-stretch: var(--narrow);
+  font-weight: 650;
+  font-size: var(--fs-small);
+  letter-spacing: var(--track-label);
+  text-decoration: none;
+  transition: color var(--dur-quick) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav__links a:hover {
+    color: var(--text);
+  }
+}
+
+.nav__cta {
+  min-height: 44px;
+  padding: 10px 18px;
+}
+
+/* ---------- secciones ---------- */
+main,
+footer {
+  position: relative;
+  z-index: 10;
+}
+
+/* Cada sección dura `weight` pantallas de scroll: una de llegada (viaja la cámara) y el resto con el texto
+   fijo mientras la escena cambia. */
+.section {
+  height: calc(var(--weight) * 100svh);
+}
+
+.section__sticky {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* el panel nunca se estira más que la pantalla */
+  align-items: center;
+  height: 100svh;
+  padding: calc(var(--nav-h) + var(--space-6)) var(--gutter) var(--space-7);
+}
+
+/* Sombra neutra debajo del texto: la escena nunca queda directo detrás de la letra. */
+.section__sticky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(18 18 18 / 0.9) 0%, rgb(18 18 18 / 0.6) 34%, rgb(18 18 18 / 0) 62%);
+  pointer-events: none;
+}
+
+.panel {
+  position: relative;
+  min-width: 0;
+  max-width: min(660px, 100%);
+}
+
+.panel h1 {
+  margin: 0;
+  font-stretch: var(--wide);
+  font-weight: 850;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--track-display);
+}
+
+.panel h2 {
+  margin: 0;
+  font-stretch: var(--semi-wide);
+  font-weight: 800;
+  font-size: min(var(--fs-title), 3.5rem); /* dos líneas como máximo en la columna de texto */
+  line-height: var(--lh-title);
+  letter-spacing: var(--track-title);
+}
+
+.panel p {
+  max-width: 36ch;
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Inicio y sentate: la escena arriba y el texto abajo (estudio A). El recorrido termina como empezó, con la
+   vista del juego entera. El título del inicio va en una línea a todo el ancho. */
+.section--inicio .section__sticky,
+.section--sentate .section__sticky {
+  align-items: end;
+}
+
+.section--inicio .section__sticky::before,
+.section--sentate .section__sticky::before {
+  background: linear-gradient(0deg, rgb(18 18 18 / 0.94) 0%, rgb(18 18 18 / 0.72) 34%, rgb(18 18 18 / 0) 62%);
+}
+
+.section--inicio .panel {
+  max-width: 100%;
+}
+
+@media (orientation: landscape) {
+  .section--sentate .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'titulo nombre'
+      'cuerpo nombre'
+      'cta nombre';
+    align-items: end;
+    column-gap: var(--space-8);
+    max-width: min(1180px, 100%);
+  }
+
+  .section--sentate .panel h2 {
+    grid-area: titulo;
+  }
+
+  .section--sentate .panel > p {
+    grid-area: cuerpo;
+  }
+
+  .section--sentate .nombre {
+    grid-area: nombre;
+    margin-top: 0;
+  }
+
+  .section--sentate .cta {
+    grid-area: cta;
+  }
+}
+
+/* ---------- señas: la leyenda de las 11 (fragmento del juego) ---------- */
+.senas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-5);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.senas__item {
+  --face-size: 44px;
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: 52px;
+}
+
+.face {
+  width: var(--face-size, var(--face-default));
+  height: var(--face-size, var(--face-default));
+}
+
+.senas__item .face {
+  flex: none;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.senas__item b {
+  display: block;
+  font-weight: 650;
+  font-size: var(--fs-small);
+  line-height: 1.25;
+}
+
+.senas__item small {
+  display: block;
+  color: var(--text-dim);
+  font-size: var(--fs-small);
+  line-height: 1.3;
+}
+
+/* ---------- nombre: lo interactivo ---------- */
+.nombre {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: end;
+  margin-top: var(--space-6);
+}
+
+.nombre__campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.nombre__campo span {
+  color: var(--text-dim);
+  font-stretch: var(--narrow);
+  font-weight: 650;
+  font-size: var(--fs-small);
+}
+
+.nombre__campo input {
+  min-width: 0;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 18px;
+}
+
+.nombre__campo input::placeholder {
+  color: var(--text-dim);
+}
+
+.nombre__cara {
+  --face-size: 152px;
+  margin: 0;
+}
+
+.nombre__cara .face {
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.nombre__cara figcaption {
+  max-width: var(--face-size);
+  margin-top: var(--space-2);
+  color: var(--text-dim);
+  font-size: var(--fs-small);
+}
+
+/* ---------- trampa (versión sin 3D): las dos cartas del juego ---------- */
+.trampa-cartas {
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.trampa-cartas figure {
+  margin: 0;
+}
+
+.trampa-cartas img {
+  width: 120px;
+  height: auto;
+  aspect-ratio: var(--naipe-ratio);
+  border-radius: 6.5% / 4.2%;
+}
+
+.carta-quemada {
+  position: relative;
+  display: block;
+  width: fit-content; /* la sombra de quemado cubre solo la carta, no el ancho del epígrafe */
+}
+
+.carta-quemada img {
+  filter: brightness(0.55) sepia(0.35);
+}
+
+/* Bordes carbonizados: los mismos valores que la carta quemada del juego (CARD en theme.js). */
+.carta-quemada::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 6.5% / 4.2%;
+  background: radial-gradient(ellipse at 50% 50%, transparent 38%, rgb(28 14 6 / 0.92) 92%);
+}
+
+.trampa-cartas figcaption {
+  margin-top: var(--space-2);
+  color: var(--text-dim);
+  font-size: var(--fs-small);
+}
+
+/* ---------- pie: el nombre vuelve a todo el ancho ---------- */
+.pie {
+  padding: var(--section-gap) var(--gutter) var(--space-6);
+  background: var(--bg);
+}
+
+.pie__palabra {
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--space-7);
+}
+
+.pie__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pie__fila p {
+  margin: 0;
+  font-size: var(--fs-lead);
+}
+
+.pie__boton {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  font: inherit;
+  font-stretch: var(--narrow);
+  font-weight: 650;
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pie__legal {
+  max-width: 90ch;
+  margin: var(--space-6) 0 0;
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  line-height: 1.45;
+}
+
+.pie__legal a {
+  color: var(--text-dim);
+}
+
+/* ---------- versión sin 3D (o sin WebGL): flujo normal, sin texto fijo ---------- */
+main[data-no3d='true'] .section {
+  height: auto;
+}
+
+main[data-no3d='true'] .section__sticky {
+  position: static;
+  height: auto;
+  padding-block: var(--section-gap) 0;
+}
+
+main[data-no3d='true'] .section:first-child .section__sticky {
+  min-height: 100svh;
+  padding-top: calc(var(--nav-h) + var(--space-8));
+}
+
+main[data-no3d='true'] .section__sticky::before {
+  display: none;
+}
+
+/* Pantallas bajas de escritorio: títulos un escalón más chicos para que entre la leyenda de señas. */
+@media (max-height: 760px) and (min-width: 761px) {
+  .panel h2 {
+    font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem);
+  }
+
+  .senas__item {
+    min-height: 44px;
+  }
+}
+
+/* ---------- en vertical (celular, tablet parada): la escena arriba, el texto abajo ---------- */
+@media (orientation: portrait) {
+  .section__sticky {
+    align-items: end;
+  }
+
+  .section__sticky::before {
+    background: linear-gradient(0deg, rgb(18 18 18 / 0.94) 0%, rgb(18 18 18 / 0.7) 42%, rgb(18 18 18 / 0) 70%);
+  }
+
+  /* La leyenda pasa a una tira que se desliza de costado: el panel no tapa la cara. */
+  .senas {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    scroll-snap-type: x mandatory;
+  }
+
+  .senas__item {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+  }
+}
+
+/* ---------- celular ---------- */
+@media (max-width: 760px) {
+  .nav {
+    gap: var(--space-4);
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  .nav__logo img {
+    height: 22px;
+  }
+
+  .nav__cta {
+    margin-left: auto;
+  }
+
+  .section__sticky {
+    padding: calc(var(--nav-h) + var(--space-4)) var(--gutter) var(--space-6);
+  }
+
+  .nombre {
+    gap: var(--space-4);
+  }
+
+  .nombre__cara {
+    --face-size: 96px;
+  }
+}
+
+/* ---------- ?debug: estado del director (herramienta de desarrollo) ---------- */
+.debug-hud {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 50;
+  max-width: calc(100vw - 16px);
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: rgb(0 0 0 / 0.8);
+  color: #e6e6e6;
+  font: 500 11px/1.45 var(--font);
+  font-variant-numeric: tabular-nums;
+  white-space: pre-wrap;
+  pointer-events: none;
+}

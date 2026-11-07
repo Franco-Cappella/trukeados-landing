@@ -1,0 +1,118 @@
+/* Base de la landing. Colores, tipografía y medidas vienen de tokens.css (copiado del juego). */
+
+/* Fontsource registra Archivo como "Archivo Variable" (wdth.css trae los ejes de ancho y de peso).
+   Se antepone a la familia de los tokens para usar la fuente autoalojada. */
+:root {
+  --font: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --nav-h: 64px; /* alto de la barra de navegación (página) */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- botones (medidas del juego, tipografía de páginas: brand/COMPONENTES.md) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-min-h);
+  padding: var(--btn-pad);
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-stretch: var(--narrow);
+  font-weight: 650;
+  font-size: var(--btn-font);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--dur-quick) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  background: var(--oro);
+  color: var(--accent-ink);
+}
+
+.btn--secondary {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover {
+    background: #f5cc4f; /* oro un 6 % más claro (brand/ALINEACION.md §4 propone el token --oro-hover) */
+  }
+
+  .btn--secondary:hover {
+    background: var(--surface-3);
+  }
+}
+
+.btn--big {
+  min-height: 54px;
+  padding: 15px 26px;
+  font-size: 19px;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --nav-h: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

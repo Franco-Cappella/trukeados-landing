@@ -1,0 +1,178 @@
+# Landing de Trukeados: contrato
+
+Fase 2 de la skill `web-inmersiva`: brief, nivel, mapa de secciones, biblia de estilo y tres estudios de
+dirección.
+
+**Aprobado el 2026-11-06.** Dirección elegida: **A como mundo, con momentos de C y de B** (sección 5).
+La URL pública del juego queda pendiente: se completa en `.env` cuando esté (`TODO(contenido)`).
+
+Marca: [brand/BRAND.md](brand/BRAND.md) y [brand/PAGINAS.md](brand/PAGINAS.md) (copias del juego).
+Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco3D`.
+
+## 1. Brief
+
+| Tema | Respuesta |
+|---|---|
+| Qué es | Trukeados: truco argentino online, en 3D, gratis y sin cuenta. Te sentás a la mesa de un bar y las señas se hacen con la cara. |
+| Quién llega | Gente que juega o jugó al truco (en familia, con amigos, en el club) y quiere jugar a distancia. Llega casi siempre por un link de WhatsApp, desde el celular. |
+| Qué tiene que entender en una pasada | Que acá las señas son de verdad (si te miran, te las cazan), que estás en primera persona en un bar, que se puede hacer trampa, y que se juega gratis, ya. |
+| Acción principal | **Jugar ahora** → `VITE_GAME_URL` (el menú del juego). Secundaria, más callada: **Practicar con bots**, que va al mismo menú hasta que el juego acepte parámetros (ver `brand/ALINEACION.md` §3 en el juego). |
+| Fuente del contenido | El juego: reglas, señas, modos y tiempos reales. Sin métricas, testimonios, logos ni citas inventadas. |
+| Dónde se ve | Celular primero, escritorio después. Importa el SEO y cómo se ve el link en WhatsApp (título, descripción, imagen). |
+| Proyecto | Nuevo: `repository/truco3D-landing`, React 19 + Vite + TypeScript, R3F + GSAP + Lenis. |
+| Pendiente | `TODO(contenido)`: la URL pública del juego. Mientras tanto, `http://localhost:8787`. |
+
+## 2. Nivel: 3, mundo de scroll
+
+La metáfora es un lugar (el bar) y la landing es un recorrido: entrás, mirás las caras y te sentás. Por eso
+hay un canvas fijo detrás de todo el sitio, y el scroll mueve la cámara y los estados (arquitectura de la
+skill, sección 7: director de scroll, `rig`, Lenis movido por el ticker de GSAP, 3D en `lazy()`).
+
+Lo que no se negocia:
+- El título y la CTA de la primera pantalla son HTML y se ven sin esperar a three.js.
+- Existe la versión sin 3D (`?sin3d`, o sin WebGL), con pósters y textos alternativos.
+- Con movimiento reducido, la cámara salta de sección en sección, sin recorrido.
+
+## 3. Mapa de secciones
+
+Una sección es una idea y un encuadre de cámara.
+
+| # | `id` | Momento | Escena | Título | Cuerpo | Evidencia | Movimiento | `weight` |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `inicio` | Gancho | El bar desde la puerta: la mesa con tres jugadores, tu silla vacía y la lámpara encima. | Truco de verdad. | Trukeados es truco argentino online, en 3D, en la mesa de un bar. Gratis y sin cuenta. | `JUEGO.md` §1-2 | La cámara entra | 1.2 |
+| 2 | `a-ciegas` | Problema | La cámara se acerca y las caras quedan en sombra. | Online, nadie te mira a la cara. | Jugar a distancia es jugar a ciegas: no sabés si el otro se achica ni qué le pasó su compañero. | Planteo, no dato | Avanza hacia la mesa | 1.0 |
+| 3 | `senas` | Idea | Primer plano de una cara que hace las señas una por una. | Las señas se hacen con la cara. | Once señas: cejas arriba, el ancho de espada; un guiño, el de basto; la boca torcida, un siete. | `config.js` `SENAS` (11) | Se acerca a la cara; cambian las señas | 2.0 |
+| 4 | `mirada` | Mecanismo | Vista diagonal de la mesa: quién mira a quién. | Solo la ve quien te está mirando. | El servidor le manda tu seña únicamente a quien te mira en ese momento. Si te cazan, te cazaron. | `truco-room.js` (`deliverSena`), `REGLAS.md` | Orbita la mesa; giran las cabezas | 1.5 |
+| 5 | `trampa` | Prueba | La carta quemada sobre el paño. | Acá también se puede hacer trampa. | Tirás dos encimadas: la de abajo juega y la de arriba queda quemada. Te pueden pedir que muestres las dos. | `REGLAS.md` (carta quemada) | Baja al paño; la carta se levanta | 1.5 |
+| 6 | `mesas` | Resultado | La mesa cambia: dos, cuatro o seis lugares, y el anotador. | De a dos, de a cuatro o de a seis. | 1 vs 1, 2 vs 2 y 3 vs 3. A 15 o a 30 puntos, sin flor. Si se te corta, un bot juega por vos. | `config.js` `MODES`, `TARGETS`, `TIMING.afk` | La mesa se arma (cuadrada → hexagonal) | 1.5 |
+| 7 | `sentate` | Acción | La vista desde tu silla, la misma del juego: los tres jugadores te miran. | La mesa está servida. | Poné tu nombre y mirá cómo te ven. Después, a jugar. | `characters.js` (`lookFor`) | La cámara se sienta | 1.4 |
+
+CTA: **Jugar ahora** en la primera pantalla y en la sección 7, con la misma etiqueta en todo el recorrido.
+Después de la sección 7 va el pie, con los créditos (cartas CC BY-SA 3.0, Archivo OFL).
+
+**Coreografía** (fase 5). Cada sección dura `weight` pantallas: la primera es la llegada (viaja la cámara) y el
+resto, la estadía (el texto queda fijo). Lo que cambia en la escena se reparte así:
+
+| Sección | Mientras llega la cámara (`fxIn`) | Con el texto fijo (`fx`) |
+|---|---|---|
+| `inicio` | Nada: es el punto de partida | Nada |
+| `a-ciegas` | Las caras quedan en sombra | Nada (dura una pantalla) |
+| `senas` | Se ilumina la cara de Cacho; el resto sigue a oscuras | Cacho pasa por las 11 señas |
+| `mirada` | Vuelve la luz | Coca y Tito se miran |
+| `trampa` | Las cabezas vuelven a la mesa | La carta de arriba se levanta, quemada, y deja ver la de abajo |
+| `mesas` | La carta vuelve a su lugar | La mesa pasa de cuatro a seis lugares |
+| `sentate` | La mesa vuelve a cuatro, antes de que la cámara llegue a tu silla | Los tres te miran: es el instante del dorado |
+
+**Composición en pantalla.** El inicio y el final llevan la escena arriba y el texto abajo en todos los tamaños:
+el recorrido termina como empezó, con la vista del juego entera. Las demás secciones llevan el texto a la
+izquierda en horizontal y abajo en vertical. Cada cámara mira a su tema y lo corre fuera del texto con un
+encuadre (`frame` en `content/site.ts`), sin girar.
+
+**Títulos en celular.** Con 31 a 34 caracteres, cuatro títulos ocupan tres líneas en 390 px. La marca pide dos
+como máximo (`brand/PAGINAS.md`), pero se acepta la excepción solo en celular y los textos quedan como están
+(2026-11-06).
+
+**Lo interactivo** (sección 7): un campo "¿Cómo te llaman en la mesa?". Mientras escribís, tu cara aparece en
+la silla vacía, dibujada con el mismo código del juego: el mismo nombre en el mismo lugar da siempre la misma
+cara. El nombre todavía no viaja al juego; para eso hace falta el cambio `?nombre=` (`ALINEACION.md` §3).
+
+## 4. Biblia de estilo
+
+- **Clima**: nocturno, de barrio, en voz baja (como cuando se pasa una seña).
+- **Metáfora**: el bar. El scroll es entrar y sentarte a la mesa.
+- **Paleta** (toda de `tokens.css`, sin colores nuevos):
+  - Campo: el bar en penumbra, `--bar` `#1a120c` en la escena y `--bg` `#121212` en la interfaz.
+  - Tinta: `--text` `#f5f5f5`.
+  - Luz: `--lampara` `#ffd9a0`, la única fuente cálida.
+  - Paño: `--pano` `#2e7344` y `--pano-3` `#1a4529`.
+  - Acento con significado: `--oro` `#f2c12e`, solo en "Jugar ahora" y en el instante en que alguien te mira.
+  - Trampa: `--copa` `#d93b30`, solo en la carta quemada y en "¡Mostrá las dos!".
+- **Tipografía**: Archivo, una sola familia. Display en 125 % y peso 850; lectura en 100 % y 400; rótulos en 78 %.
+- **Materiales**: paño mate, madera barnizada, vidrio, cartón de naipe, pared pintada. Los personajes son
+  dibujos 2D sobre planos, como en el juego. Solo brilla la lámpara.
+- **Movimiento dominante**: travelling hacia la mesa, cabezas que giran para mirar, cartas que se asientan.
+  Una sola cámara continua.
+- **Ritmo**: lento al entrar, rápido en las señas, pausa en la trampa, quieto al sentarse.
+- **Tres clichés que se evitan**:
+  1. Partículas o humo flotando "de ambiente".
+  2. Brillo en todo: bloom, neón, dorado de casino.
+  3. Texto sobre vidrio esmerilado o tarjetas con sombra encima de la escena.
+- **Texto sobre la escena**: sobre una sombra neutra (degradé de `--bg`, la única excepción que permite la
+  marca), con contraste de 4,5:1 o más. En celular, el texto va abajo y la escena arriba.
+
+## 5. Estudios de dirección
+
+Los tres usan el mismo bar, armado con las medidas del juego. Cambian la cámara, la luz, la composición y la
+relación entre texto y escena. Se ven en `npm run dev`, en `/?estudio=a`, `/?estudio=b` y `/?estudio=c`.
+
+### A · La puerta
+
+![Estudio A](estudios/estudio-a.png)
+
+- **Cámara**: de pie, de frente y alta. La mesa al centro, con tu silla vacía adelante.
+- **Luz**: la lámpara como única luz cálida; las paredes en penumbra.
+- **Composición**: la sala arriba y el título abajo, sobre sombra.
+- **Recorrido**: entra desde la puerta, rodea la mesa en las señas y termina sentado en tu silla, que es la
+  vista del juego.
+- **A favor**: es el lugar, y termina justo donde empieza el juego.
+- **En contra**: al principio las caras se ven chicas, y carga más 3D (la sala entera).
+
+### B · Desde arriba
+
+![Estudio B](estudios/estudio-b.png)
+
+- **Cámara**: cenital, sin sala.
+- **Luz**: pareja y gráfica.
+- **Composición**: el paño como tablero a la derecha, el texto a la izquierda sobre el fondo de la marca.
+- **Recorrido**: la cámara baja y gira sobre la mesa; las cartas se reparten y se juegan; las caras son fichas
+  que cambian de seña.
+- **A favor**: es el más legible y el más liviano, y explica reglas (la trampa, la jerarquía) con claridad.
+- **En contra**: se pierden el bar y la primera persona. Es el menos inmersivo.
+
+### C · Caras
+
+![Estudio C](estudios/estudio-c.png)
+
+- **Cámara**: a la altura de la cara de un jugador, con el resto a oscuras.
+- **Luz**: de contorno, cálida y desde atrás.
+- **Composición**: la cara a la derecha, el texto a la izquierda.
+- **Recorrido**: cortes de cara en cara, una seña por scroll. Al final la cámara se aleja y aparece la mesa.
+- **A favor**: la mecánica de las señas es la protagonista, y es muy humano.
+- **En contra**: depende de un dibujo 2D muy grande (se nota que es plano) y da menos sensación de lugar.
+
+### Recomendación
+
+**A como mundo, con momentos de C y de B.** Es un solo bar y una sola cámara continua, como pide el nivel 3.
+La sección de señas usa el primer plano de C, la de la trampa baja a la vista cenital de B, y el final se sienta
+en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
+
+## 6. Estado técnico
+
+- Las piezas del bar (sala, techo, lámpara, mesa, sillas, personajes, fichas, cartas) están en
+  `src/three/bar/` con las medidas de `scene.js`, y la escena final las reutiliza. Los estudios están en
+  `src/studies/` y cargan aparte (`?estudio=a|b|c`).
+- El director de scroll (`src/scroll/useStoryTimeline.ts`) es lo único que escribe en `rig`: la cámara viaja
+  en la llegada de cada sección y los efectos cambian según la coreografía (sección 3).
+- `src/three/Experience.tsx` es el canvas fijo, en `lazy()`: la capa DOM no importa three. Hoy dibuja la escena
+  gris (`src/three/gray/GrayBar.tsx`), que en la fase 6 se reemplaza por el bar.
+- Pesos: la landing, 131 KB gzip (límite 150); el paquete 3D, 250 KB gzip (límite 350).
+- `npm run encuadres` calcula, sin renderizar, dónde cae cada cara, la mesa y las cartas en 1440, 768 y 390, y
+  avisa si algo queda debajo del texto o fuera del cuadro.
+- Capturas: `npm run build && npm run preview`, y en otra terminal `npm run capture -- director` (o `estudios`,
+  `landing`). El set `director` captura cada sección en los tres tamaños, arma una hoja de contacto por tamaño
+  y prueba que la escena vuelva a su estado al ir, volver y saltar, con movimiento reducido y sin 3D.
+- `?debug` muestra el estado del director (sección, tramo, cámara y efectos).
+
+## 7. Fases
+
+| Fase | Estado |
+|---|---|
+| 3. Base | Hecha |
+| 4. Esqueleto HTML | Hecha |
+| 5. Director de scroll y escena gris | En revisión |
+| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Pendiente |
+| 7. Efectos, niveles de calidad y respaldos: postprocesado solo en el nivel alto, pósters de la versión sin 3D, entrada de la escena | Pendiente |
+| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Pendiente |
+
+Anotado para la fase 7: con el celular acostado (844 × 390) los paneles de señas y de tu nombre no entran en el
+alto de la pantalla.

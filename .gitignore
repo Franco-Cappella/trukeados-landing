@@ -1,0 +1,7 @@
+node_modules
+dist
+.env
+# Carpeta de trabajo de design-taste-frontend: la dirección que se sorteó la reemplazó el contrato
+.taste-skill/
+# Capturas de verificación: se regeneran con npm run capture (las de los estudios sí van, son del contrato)
+docs/capturas/
