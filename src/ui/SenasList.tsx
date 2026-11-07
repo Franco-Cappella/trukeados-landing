@@ -12,6 +12,7 @@ export function SenasList() {
   const list = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
     let shown = -2;
     const tick = () => {
       const el = list.current;
@@ -27,7 +28,9 @@ export function SenasList() {
       });
       // En la tira que se desliza de costado (celular), la seña activa queda a la vista.
       const li = items[idx];
-      if (li && el.scrollWidth > el.clientWidth) el.scrollTo({ left: li.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+      if (li && el.scrollWidth > el.clientWidth) {
+        el.scrollTo({ left: li.offsetLeft - el.offsetLeft, behavior: reduce.matches ? 'auto' : 'smooth' });
+      }
     };
     gsap.ticker.add(tick);
     return () => gsap.ticker.remove(tick);

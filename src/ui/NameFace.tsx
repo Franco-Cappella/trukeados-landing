@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MAX_NAME } from '../game/config.js';
 import { FaceCanvas } from './FaceCanvas';
 
@@ -8,6 +8,12 @@ export function NameFace() {
   const [name, setName] = useState('');
   const typed = name.trim();
   const shown = typed || 'Vos';
+  // El lector de pantalla lo anuncia cuando dejás de escribir, no con cada letra.
+  const [announced, setAnnounced] = useState('');
+  useEffect(() => {
+    const t = setTimeout(() => setAnnounced(typed ? `Así te ven, ${typed}.` : ''), 700);
+    return () => clearTimeout(t);
+  }, [typed]);
   return (
     <div className="nombre" data-ui>
       <label className="nombre__campo">
@@ -27,7 +33,10 @@ export function NameFace() {
           size={152}
           label={typed ? `Así te ven en la mesa con el nombre ${typed}` : 'Así te ven en la mesa'}
         />
-        <figcaption aria-live="polite">{typed ? `Así te ven, ${typed}.` : 'Así te ven.'}</figcaption>
+        <figcaption>{typed ? `Así te ven, ${typed}.` : 'Así te ven.'}</figcaption>
+        <span className="sr-only" aria-live="polite">
+          {announced}
+        </span>
       </figure>
     </div>
   );

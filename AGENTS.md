@@ -34,6 +34,8 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
   Requiere `npm run build && npm run preview` corriendo en el puerto 4173. `director` además prueba que la
   escena vuelva a su estado al ir, volver y saltar, con movimiento reducido y sin 3D: correrlo después de
   tocar cámaras, `weight` o efectos.
+- `npm run capture -- posters`: los pósters de la versión sin 3D (`public/posters/`). Volver a sacarlos si cambia
+  una escena o una cámara.
 - `npm run encuadres [id]`: dónde cae cada cosa del bar en pantalla con las cámaras de `site.ts`, sin
   renderizar. Sirve para ajustar una cámara antes de sacar capturas.
 - `?debug` en la URL: estado del director en pantalla. `?gris`: la escena gris en lugar del bar.

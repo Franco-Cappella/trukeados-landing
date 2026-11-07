@@ -44,8 +44,16 @@ export function CameraRig() {
     v.target.set(c.tx, c.ty, c.tz);
     v.lensGoal.set(c.fov, c.ox, c.oy);
 
-    if (rig.snap || !v.started) {
+    if (rig.snap) {
       cam.position.copy(v.goal);
+      v.look.copy(v.target);
+      v.lens.copy(v.lensGoal);
+      v.started = true;
+    } else if (!v.started) {
+      // Entrada: la cámara arranca un poco más atrás y arriba y se acomoda mientras la escena aparece.
+      v.fwd.subVectors(v.target, v.goal).normalize();
+      cam.position.copy(v.goal).addScaledVector(v.fwd, -1.1);
+      cam.position.y += 0.2;
       v.look.copy(v.target);
       v.lens.copy(v.lensGoal);
       v.started = true;

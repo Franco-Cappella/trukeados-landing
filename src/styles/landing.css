@@ -19,11 +19,48 @@
 }
 
 /* ---------- escena: canvas fijo, detrás del contenido ---------- */
+/* Aparece con un fundido cuando dibujó el primer cuadro (la cámara entra al mismo tiempo, CameraRig). */
 .stage {
   position: fixed;
   inset: 0;
   z-index: 0;
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 800ms var(--ease-out);
+}
+
+.stage[data-listo] {
+  opacity: 1;
+}
+
+/* Placa de nombre del juego (brand/COMPONENTES.md §6), arriba de cada jugador. La opacidad la lleva el
+   scroll (World.tsx): sin transición, para no suavizar dos veces. */
+.placa {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 3px 10px 3px 8px;
+  border-left: 3px solid var(--team0);
+  background: rgb(18 18 18 / 0.9); /* --panel del juego */
+  color: var(--text);
+  font-family: var(--font);
+  font-stretch: var(--narrow);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.placa--t1 {
+  border-left-color: var(--team1);
+}
+
+.placa__chip {
+  color: var(--oro); /* el instante en que alguien te mira: el otro uso del oro */
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* ---------- navegación: logo, tres enlaces y una acción ---------- */
@@ -380,6 +417,13 @@ footer {
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
+  transition: color var(--dur-quick) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pie__boton:hover {
+    color: var(--text);
+  }
 }
 
 .pie__legal {
@@ -412,6 +456,19 @@ main[data-no3d='true'] .section:first-child .section__sticky {
 
 main[data-no3d='true'] .section__sticky::before {
   display: none;
+}
+
+/* El póster de cada sección: la misma escena, quieta, debajo del texto. */
+.section__figure {
+  max-width: 1100px;
+  margin: var(--space-6) 0 0;
+}
+
+.section__figure img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 
 /* Pantallas bajas de escritorio: títulos un escalón más chicos para que entre la leyenda de señas. */
@@ -478,6 +535,73 @@ main[data-no3d='true'] .section__sticky::before {
 
   .nombre__cara {
     --face-size: 96px;
+  }
+}
+
+/* ---------- celular acostado: pantalla baja, todo al tamaño mínimo de la marca para que el panel entre ---------- */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root {
+    --nav-h: 52px;
+  }
+
+  .section__sticky {
+    padding: calc(var(--nav-h) + var(--space-3)) var(--gutter) var(--space-4);
+  }
+
+  /* Columna más angosta: el título baja a dos líneas y no pisa la escena de la derecha. */
+  .panel {
+    max-width: min(460px, 100%);
+  }
+
+  .panel h1 {
+    font-size: 3.25rem; /* mínimo del display */
+  }
+
+  .panel h2 {
+    font-size: 2.25rem; /* mínimo de los títulos */
+  }
+
+  .panel p {
+    margin-top: var(--space-2);
+    font-size: 1rem;
+  }
+
+  .cta {
+    margin-top: var(--space-4);
+  }
+
+  .btn--big {
+    min-height: 44px;
+    padding: 10px 18px;
+    font-size: var(--btn-font);
+  }
+
+  .senas {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    scroll-snap-type: x mandatory;
+  }
+
+  .senas__item {
+    flex: 0 0 200px;
+    min-height: 44px;
+    scroll-snap-align: start;
+  }
+
+  .nombre {
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .nombre__cara {
+    --face-size: 64px;
+  }
+
+  .nombre__campo input {
+    padding: 10px 14px;
   }
 }
 

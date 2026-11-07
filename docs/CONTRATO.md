@@ -163,7 +163,20 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 - La carta quemada en primer plano usa bordes carbonizados sin brasas (`charredTexture`), como la versión
   sin 3D: las brasas del juego, a ese tamaño y bajo la lámpara, se veían como manchas naranjas.
 - `?gris` muestra la escena gris de la fase 5 (`src/three/gray/`), para ajustar tiempos sin el arte.
-- Pesos: la landing, 131 KB gzip (límite 150); el paquete 3D, 255 KB gzip (límite 350). Como mucho 64 draw
+- El instante dorado (fase 7): al sentarte aparecen las placas de nombre del juego arriba de cada jugador
+  (`brand/COMPONENTES.md` §6), con "te mira" en oro. Son HTML sobre el canvas, se ubican en cada cuadro y
+  nunca salen de la pantalla: desde tu silla, Coca y Tito quedan en los bordes.
+- Entrada: la escena aparece con un fundido cuando dibujó el primer cuadro, y la cámara llega desde un poco más
+  atrás. Con movimiento reducido, sin recorrido.
+- Niveles de calidad: `PerformanceMonitor` baja al nivel bajo si caen los cuadros por segundo (resolución 1 y
+  un redibujo de personaje por cuadro) y sube si se recuperan.
+- Sin postprocesado: la biblia de estilo evita el bloom, y la lámpara y la niebla ya cierran los bordes.
+- Pósters de la versión sin 3D: `npm run capture -- posters` saca la escena de cada sección, centrada y sin
+  el texto, en WebP (`public/posters/`, 240 KB los siete). Se vuelven a sacar si cambia una escena o una cámara.
+- Celular acostado: todo al tamaño mínimo de la marca y la columna de texto más angosta.
+- Costo de los personajes, medido con la CPU 4 veces más lenta (celular medio): unos 180 redibujos al recorrer
+  toda la página, de 6 ms en promedio.
+- Pesos: la landing, 132 KB gzip (límite 150); el paquete 3D, 256 KB gzip (límite 350). Como mucho 64 draw
   calls y 10 mil triángulos por cuadro (límites 150 y 500 mil).
 - `npm run encuadres` calcula, sin renderizar, dónde cae cada cara, la mesa y las cartas en 1440, 768 y 390, y
   avisa si algo queda debajo del texto o fuera del cuadro.
@@ -179,11 +192,9 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 | 3. Base | Hecha |
 | 4. Esqueleto HTML | Hecha |
 | 5. Director de scroll y escena gris | Hecha |
-| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | En revisión |
-| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te miran", postprocesado solo en el nivel alto, pósters de la versión sin 3D, entrada de la escena, celular acostado | Pendiente |
+| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Hecha |
+| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te mira", niveles de calidad, pósters de la versión sin 3D, entrada de la escena, celular acostado | En revisión |
 | 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Pendiente |
 
-Anotado para la fase 7:
-- Con el celular acostado (844 × 390) los paneles de señas y de tu nombre no entran en el alto de la pantalla.
-- El instante dorado: cuando los tres te miran (sección 7), algo en oro tiene que decir que te están mirando.
-- Medir en un celular real cuánto cuesta redibujar los personajes mientras la cámara viaja.
+Anotado para la fase 8: probar en un celular real. Con la CPU 4 veces más lenta hubo picos aislados de unos
+120 ms en un redibujo, que pueden notarse como un salto.

@@ -3,6 +3,7 @@
 //   sets: estudios (los 3 estudios de dirección) · landing (escritorio, celular, secciones y versión sin 3D)
 //         director (cada sección al final de su tramo en 1440, 768 y 390, y la prueba de ida, vuelta y saltos:
 //         el estado de la escena tiene que coincidir con el esperado en cada sección)
+//         posters (la escena de cada sección sin el texto, en WebP: los pósters de la versión sin 3D)
 // Opcional: BASE=<url> (por defecto http://localhost:4173) y CHROME=<ruta al ejecutable>.
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -27,6 +28,8 @@ const SETS = {
     { path: '/', file: 'capturas/escritorio-sentate.png', section: 'sentate' },
     { path: '/', file: 'capturas/celular-inicio.png', w: 390, h: 844, mobile: true },
     { path: '/', file: 'capturas/celular-senas.png', w: 390, h: 844, mobile: true, section: 'senas' },
+    { path: '/', file: 'capturas/acostado-senas.png', w: 844, h: 390, mobile: true, section: 'senas' },
+    { path: '/', file: 'capturas/acostado-sentate.png', w: 844, h: 390, mobile: true, section: 'sentate' },
     { path: '/?sin3d', file: 'capturas/sin3d-escritorio.png', full: true },
   ],
 };
@@ -38,7 +41,7 @@ const VIEWPORTS = [
 ];
 
 const set = process.argv[2] ?? 'estudios';
-const shots = set === 'director' ? [] : SETS[set];
+const shots = set === 'director' || set === 'posters' ? [] : SETS[set];
 if (!shots) throw new Error(`Set desconocido: ${set}. Opciones: ${Object.keys(SETS).join(', ')}`);
 
 const chromePath = [
@@ -71,6 +74,37 @@ async function contactSheet(vp, files) {
   fs.writeFileSync(path.join(outDir, 'capturas', 'director', `hoja-${vp.name}.png`), Buffer.from(r.result.data, 'base64'));
 }
 
+// Pósters de la versión sin 3D: la escena de cada sección al final de su tramo, sin el texto ni la barra.
+async function posters() {
+  const dir = path.join(root, 'public', 'posters');
+  fs.mkdirSync(dir, { recursive: true });
+  errors.length = 0;
+  await send('Emulation.setDeviceMetricsOverride', { width: 1600, height: 1000, deviceScaleFactor: 1, mobile: false });
+  await send('Page.navigate', { url: base + '/?debug' });
+  await sleep(8000);
+  await evaluate(`document.head.insertAdjacentHTML('beforeend', '<style>main, .nav, footer, .debug-hud { visibility: hidden !important; }</style>')`);
+  // En qué punto de la estadía se saca cada póster (1 = al final). Las señas, en el guiño (la segunda de 11),
+  // que es lo que dice su texto alternativo.
+  const AT = { senas: 0.136 };
+  const ends = await evaluate(`[...document.querySelectorAll('[data-section]')].map((el) => {
+    const top = el.getBoundingClientRect().top + scrollY;
+    return { id: el.id, top: Math.round(top), stay: el.offsetHeight - innerHeight };
+  })`);
+  for (const s of ends) {
+    await evaluate(`scrollTo(0, ${Math.round(s.top + s.stay * (AT[s.id] ?? 1))})`);
+    await sleep(500);
+    // El póster va solo, debajo del texto: el tema al centro, no corrido para dejar lugar al texto. Se toca el
+    // encuadre a mano (solo en esta herramienta) y se espera a que la cámara se acomode.
+    await evaluate('Object.assign(window.__rig.cam, { ox: 0, oy: 0 })');
+    await sleep(2800);
+    const r = await send('Page.captureScreenshot', { format: 'webp', quality: 72 });
+    const file = path.join(dir, `${s.id}.webp`);
+    fs.writeFileSync(file, Buffer.from(r.result.data, 'base64'));
+    console.log(`posters/${s.id}.webp · ${Math.round(fs.statSync(file).size / 1024)} KB`);
+  }
+  console.log(errors.length ? `errores: ${errors.slice(0, 3).join(' | ')}` : 'sin errores');
+}
+
 // Recorre las secciones con ?debug: captura cada una al final de su tramo y compara window.__rig con
 // window.__expected(i). Después vuelve hacia atrás y salta, y compara de nuevo: así se prueba la reversibilidad.
 async function director() {
@@ -84,11 +118,19 @@ async function director() {
       const top = el.getBoundingClientRect().top + scrollY;
       return { id: el.id, end: Math.round(top + el.offsetHeight - innerHeight), mid: Math.round(top + (el.offsetHeight - innerHeight) / 2) };
     })`);
+    // Espera a que el estado se asiente (hasta 2,5 s): con WebGL por software un cuadro puede tardar más que la
+    // espera fija. Si después de eso no coincide, es un error de verdad.
     const check = async (i, tag) => {
-      const bad = await evaluate(`(() => {
-        const r = window.__rig, e = window.__expected(${i}), out = [];
-        for (const [k, v] of Object.entries(e.cam)) if (Math.abs(r.cam[k] - v) > 0.005) out.push('cam.' + k + ' ' + r.cam[k].toFixed(3) + '≠' + v.toFixed(3));
-        for (const [k, v] of Object.entries(e.fx)) if (Math.abs(r.fx[k] - v) > 0.005) out.push('fx.' + k + ' ' + r.fx[k].toFixed(3) + '≠' + v.toFixed(3));
+      const bad = await evaluate(`(async () => {
+        let out = [];
+        for (let t = 0; t < 2500; t += 125) {
+          const r = window.__rig, e = window.__expected(${i});
+          out = [];
+          for (const [k, v] of Object.entries(e.cam)) if (Math.abs(r.cam[k] - v) > 0.005) out.push('cam.' + k + ' ' + r.cam[k].toFixed(3) + '≠' + v.toFixed(3));
+          for (const [k, v] of Object.entries(e.fx)) if (Math.abs(r.fx[k] - v) > 0.005) out.push('fx.' + k + ' ' + r.fx[k].toFixed(3) + '≠' + v.toFixed(3));
+          if (!out.length) break;
+          await new Promise((res) => setTimeout(res, 125));
+        }
         return out;
       })()`);
       if (bad.length) {
@@ -143,6 +185,29 @@ async function director() {
     console.log(`director ${vp.name}: ${ends.length} secciones · máx. ${cost.calls} draw calls y ${Math.round(cost.tris / 1000)} k triángulos`, errors.length ? `· errores: ${errors.slice(0, 3).join(' | ')}` : '· sin errores');
     await contactSheet(vp, files);
   }
+  // Costo de redibujar los personajes con la CPU 4 veces más lenta (como un celular medio), scrolleando de
+  // punta a punta como lo haría una persona.
+  await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await send('Page.navigate', { url: base + '/?debug' });
+  await sleep(8000);
+  await send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  const cast = await evaluate(`(async () => {
+    Object.assign(window.__cast, { draws: 0, ms: 0, max: 0, hi: { draws: 0, ms: 0, max: 0 } });
+    const t0 = performance.now();
+    let frames = 0;
+    const total = document.documentElement.scrollHeight - innerHeight;
+    for (let y = 0; y <= total; y += 24) {
+      scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(() => r()));
+      frames++;
+    }
+    const c = window.__cast;
+    return { draws: c.draws, avg: c.draws ? c.ms / c.draws : 0, max: c.max, frames, secs: (performance.now() - t0) / 1000,
+      hi: { draws: c.hi.draws, avg: c.hi.draws ? c.hi.ms / c.hi.draws : 0, max: c.hi.max } };
+  })()`);
+  await send('Emulation.setCPUThrottlingRate', { rate: 1 });
+  console.log(`redibujos (CPU x4, 390 x 844): ${cast.draws} en ${cast.frames} cuadros · promedio ${cast.avg.toFixed(1)} ms · máximo ${cast.max.toFixed(1)} ms · de alta resolución: ${cast.hi.draws}, promedio ${cast.hi.avg.toFixed(1)} ms, máximo ${cast.hi.max.toFixed(1)} ms`);
+
   // Movimiento reducido: la cámara salta de sección en sección (canvas a pedido) y cada estado es el final.
   errors.length = 0;
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
@@ -307,6 +372,7 @@ for (const shot of shots) {
 }
 
 if (set === 'director') await director();
+if (set === 'posters') await posters();
 
 ws.close();
 chrome.kill();

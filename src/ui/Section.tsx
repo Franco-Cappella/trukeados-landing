@@ -31,7 +31,7 @@ export function Section({ s, i }: { s: SectionData; i: number }) {
         </article>
         {flat && s.figure.poster && (
           <figure className="section__figure">
-            <img src={s.figure.poster} alt={s.figure.alt} width={1600} height={900} loading="lazy" />
+            <img src={s.figure.poster} alt={s.figure.alt} width={1600} height={1000} loading="lazy" decoding="async" />
           </figure>
         )}
       </div>

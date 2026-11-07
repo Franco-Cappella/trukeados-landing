@@ -38,7 +38,7 @@ export type Section = {
   cameraPortrait: Shot; // en vertical: más lejos y con el objeto más arriba
   fxIn?: Partial<SceneFx>; // lo que cambia mientras la cámara llega
   fx: Partial<SceneFx>; // lo que cambia con el texto fijo (necesita weight > 1)
-  figure: { poster: string; alt: string }; // póster para la versión sin 3D (fase 7) y descripción
+  figure: { poster: string; alt: string }; // póster de la versión sin 3D (npm run capture -- posters) y descripción
   extra?: 'senas' | 'trampa' | 'nombre';
   cta?: boolean;
 };
@@ -54,7 +54,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [0, 2.2, 5.6], target: [0, 1.4, 0], fov: 66, frame: [0, 0.2] },
     fx: {},
     figure: {
-      poster: '',
+      poster: '/posters/inicio.webp',
       alt: 'El bar de Trukeados visto desde la puerta: una mesa de paño verde bajo una lámpara, tres jugadores con cartas y una silla vacía.',
     },
     cta: true,
@@ -70,7 +70,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [1.3, 2.0, 3.0], target: [0.1, 1.15, -0.4], frame: [0, 0.2] },
     fxIn: { dim: 1 },
     fx: {},
-    figure: { poster: '', alt: 'La mesa más de cerca, con las caras de los jugadores en sombra.' },
+    figure: { poster: '/posters/a-ciegas.webp', alt: 'La mesa más de cerca, con las caras de los jugadores en sombra.' },
   },
   {
     id: 'senas',
@@ -82,7 +82,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [0.06, 1.47, 0.38], target: [0, 1.425, -1.25], fov: 50 },
     fxIn: { closeup: 1 },
     fx: { sena: 1 },
-    figure: { poster: '', alt: 'Primer plano de Cacho guiñando un ojo: la seña del ancho de basto.' },
+    figure: { poster: '/posters/senas.webp', alt: 'Primer plano de Cacho guiñando un ojo: la seña del ancho de basto.' },
     extra: 'senas',
   },
   {
@@ -98,7 +98,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [3.0, 3.5, 3.4], target: [0, 1.0, 0], frame: [0, 0.17] },
     fxIn: { dim: 0, closeup: 0 },
     fx: { gaze: 1 },
-    figure: { poster: '', alt: 'La mesa vista en diagonal: Coca mira a Tito, y Tito mira a su compañero.' },
+    figure: { poster: '/posters/mirada.webp', alt: 'La mesa vista en diagonal: Coca mira a Tito, y Tito mira a su compañero.' },
   },
   {
     id: 'trampa',
@@ -114,8 +114,8 @@ const sections: Section[] = [
     fxIn: { gaze: 0, played: 1 },
     fx: { burn: 1 },
     figure: {
-      poster: '',
-      alt: 'Dos cartas encimadas sobre el paño: la de arriba, quemada, con los bordes carbonizados.',
+      poster: '/posters/trampa.webp',
+      alt: 'Dos cartas sobre el paño: el siete de oro, que juega, y encima el cuatro de copa levantado y quemado, con los bordes carbonizados.',
     },
     extra: 'trampa',
   },
@@ -132,7 +132,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [0, 3.95, 3.0], target: [0, 1.0, 0], fov: 80, frame: [0, 0.2] },
     fxIn: { burn: 0, played: 0 },
     fx: { six: 1 },
-    figure: { poster: '', alt: 'La mesa vista desde arriba, con lugar para seis jugadores.' },
+    figure: { poster: '/posters/mesas.webp', alt: 'La mesa vista desde arriba, con lugar para seis jugadores.' },
   },
   {
     id: 'sentate',
@@ -145,7 +145,7 @@ const sections: Section[] = [
     cameraPortrait: { position: [0, 1.24, 1.19], target: [0, 1.0, 0.01], fov: 84, frame: [0, 0.16] },
     fxIn: { six: 0 },
     fx: { seated: 1 },
-    figure: { poster: '', alt: 'La mesa vista desde tu silla, igual que en el juego: tres jugadores te miran.' },
+    figure: { poster: '/posters/sentate.webp', alt: 'La mesa vista desde tu silla, igual que en el juego: tres jugadores te miran.' },
     extra: 'nombre',
     cta: true,
   },
@@ -155,6 +155,8 @@ export const site = {
   name: 'Trukeados',
   tagline: 'Truco argentino online, en 3D.',
   cta: { primary: 'Jugar ahora', secondary: 'Practicar con bots' },
+  /** Placa de nombre del juego (la que va arriba de cada jugador): el chip en oro cuando alguien te mira. */
+  teMira: 'te mira',
   nav: [
     { id: 'senas', label: 'Señas' },
     { id: 'trampa', label: 'Trampa' },

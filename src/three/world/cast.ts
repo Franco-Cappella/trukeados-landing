@@ -5,7 +5,10 @@ import { CanvasTexture, MathUtils, SRGBColorSpace, Vector3 } from 'three';
 import { drawCharacter, lookFor, W, H } from '../../game/characters.js';
 
 const HEAD_RATE = 9; // suavizado del giro de cabeza (el mismo del juego)
-const REDRAWS_PER_FRAME = 2; // tope de redibujos por cuadro: con la cámara en viaje cambian todos a la vez
+/** Tope de redibujos por cuadro: con la cámara en viaje cambian todos a la vez. En el nivel bajo, uno. */
+export const castConfig = { budget: 2 };
+/** Cuánto cuesta dibujar (lo lee scripts/capture.mjs con ?debug). */
+export const castStats = { draws: 0, ms: 0, max: 0, hi: { draws: 0, ms: 0, max: 0 } };
 
 export type Actor = {
   name: string;
@@ -46,10 +49,16 @@ export function createActor(name: string, seat: number, scale = 1): Actor {
 }
 
 function draw(a: Actor) {
+  const t0 = performance.now();
   a.ctx.setTransform(a.scale, 0, 0, a.scale, 0, 0);
   drawCharacter(a.ctx, a.look, { ...a.pose, cards: 3 });
   a.texture.needsUpdate = true;
   a.drawn = { ...a.pose };
+  const ms = performance.now() - t0;
+  const st = a.scale > 1 ? castStats.hi : castStats;
+  st.draws++;
+  st.ms += ms;
+  st.max = Math.max(st.max, ms);
 }
 
 const toCam = new Vector3();
@@ -83,20 +92,22 @@ export function updatePose(a: Actor, cam: Vector3, g: Gaze, dt: number) {
   a.pose.headYaw += (head - a.pose.headYaw) * k;
   a.pose.down += (down - a.pose.down) * k;
   a.pose.expr = g.expr;
+  // Umbrales: unos 3° de diferencia no se notan en un recorte 2D y ahorran un tercio de los redibujos
+  // (medido con la CPU 4 veces más lenta: cada redibujo cuesta unos 8 ms).
   const d = a.drawn;
   return (
     d.expr !== a.pose.expr ||
-    Math.abs(d.bodyYaw - a.pose.bodyYaw) > 0.04 ||
-    Math.abs(d.headYaw - a.pose.headYaw) > 0.03 ||
-    Math.abs(d.down - a.pose.down) > 0.05
+    Math.abs(d.bodyYaw - a.pose.bodyYaw) > 0.06 ||
+    Math.abs(d.headYaw - a.pose.headYaw) > 0.05 ||
+    Math.abs(d.down - a.pose.down) > 0.08
   );
 }
 
 let cursor = 0;
 
-/** Redibuja los que lo necesitan, como mucho REDRAWS_PER_FRAME por cuadro (empieza por uno distinto cada vez). */
+/** Redibuja los que lo necesitan, como mucho castConfig.budget por cuadro (empieza por uno distinto cada vez). */
 export function redraw(actors: Actor[], needs: boolean[]) {
-  let budget = REDRAWS_PER_FRAME;
+  let budget = castConfig.budget;
   for (let k = 0; k < actors.length && budget > 0; k++) {
     const i = (cursor + k) % actors.length;
     if (!needs[i]) continue;
