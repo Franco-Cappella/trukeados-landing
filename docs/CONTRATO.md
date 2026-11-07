@@ -93,6 +93,9 @@ cara. El nombre todavía no viaja al juego; para eso hace falta el cambio `?nomb
 - **Movimiento dominante**: travelling hacia la mesa, cabezas que giran para mirar, cartas que se asientan.
   Una sola cámara continua.
 - **Ritmo**: lento al entrar, rápido en las señas, pausa en la trampa, quieto al sentarse.
+- **Excepción: reflejo de moneda** (decisión del usuario, 2026-11-07; ver «Después del cierre»). Solo en los botones
+  dorados (`.btn--primary`): un reflejo cruza el oro una vez al pasar el mouse o llegar con el teclado. Sin resplandor,
+  sin degradé en el texto, sin loop, y apagado con movimiento reducido. Es la única excepción al cliché 2.
 - **Tres clichés que se evitan**:
   1. Partículas o humo flotando "de ambiente".
   2. Brillo en todo: bloom, neón, dorado de casino.
@@ -248,6 +251,18 @@ aislados de unos 100 ms, que pueden notarse como un salto).
 - Landing cerrada. Queda fuera de esta fase: probar en un celular real (INP y picos al redibujar personajes),
   definir `VITE_GAME_URL` y `VITE_SITE_URL` (dominio), y la decisión del juego (merge de `marca-y-landing` y
   `docs/landing/PLAN.md`).
+
+### Después del cierre
+
+- **Reflejo de moneda en los botones dorados** (2026-11-07, decisión del usuario). Está en `src/styles/base.css`,
+  dentro de `(hover: hover) and (pointer: fine)`, con su versión de movimiento reducido aparte. Contradice
+  `brand/PAGINAS.md` §4 y `brand/BRAND.md` (sin brillos ni degradés en botones) y el cliché 2 de esta biblia; por
+  eso queda como excepción documentada.
+- Pendiente en el juego, porque `docs/brand` se sincroniza y no se edita desde la landing: agregar la excepción en
+  `brand/PAGINAS.md` §4 y `brand/BRAND.md`, y el token `--oro-hover` en `brand/tokens.css` (lo propone
+  `brand/ALINEACION.md` §4). Hoy el hover usa `#f5cc4f` escrito a mano en `base.css`.
+- Sin verificar en el navegador todavía: el botón grande (`btn--big`), el foco por teclado y el recorrido en 768 y
+  390 con el efecto. Comparten la regla del hover, pero no se midieron.
 
 ### Publicación
 

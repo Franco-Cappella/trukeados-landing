@@ -101,6 +101,44 @@ canvas {
   .btn--secondary:hover {
     background: var(--surface-3);
   }
+
+  /* Reflejo de moneda: al pasar el mouse (o llegar con el teclado), la luz de la lámpara cruza el oro una
+     sola vez, como cuando se inclina una moneda sobre la mesa. Va debajo del texto (z-index -1 dentro del
+     contexto que abre `isolation`), así la tinta queda intacta. En reposo el reflejo espera afuera, a la
+     izquierda; al salir vuelve sin transición y no se ve porque ya está afuera, a la derecha. */
+  .btn--primary {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .btn--primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 34%,
+      color-mix(in oklab, var(--oro), white 45%) 50%,
+      transparent 66%
+    );
+    transform: translateX(-80%);
+  }
+
+  .btn--primary:hover::after,
+  .btn--primary:focus-visible::after {
+    transform: translateX(80%);
+    transition: transform 650ms var(--ease-out);
+  }
+}
+
+/* Con movimiento reducido, sin reflejo: queda solo el cambio de tono del hover. */
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary::after {
+    content: none;
+  }
 }
 
 .btn--big {
