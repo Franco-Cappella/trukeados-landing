@@ -28,7 +28,8 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 
 ## Comandos
 
-- `npm run dev`, `npm run build` (incluye `tsc`), `npm run preview`.
+- `npm run dev`, `npm run build` (incluye `tsc`), `npm run preview`. Al construir para publicar:
+  `VITE_GAME_URL` y `VITE_SITE_URL` (ver `.env.example`).
 - `npm run sync`: copia lo que viene del juego.
 - `npm run capture -- estudios`, `landing` o `director`: capturas en `docs/estudios/` y `docs/capturas/`.
   Requiere `npm run build && npm run preview` corriendo en el puerto 4173. `director` además prueba que la
@@ -36,6 +37,8 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
   tocar cámaras, `weight` o efectos.
 - `npm run capture -- posters`: los pósters de la versión sin 3D (`public/posters/`). Volver a sacarlos si cambia
   una escena o una cámara.
+- `npm run capture -- og`: la imagen para compartir (`public/og.jpg`) y el ícono de iOS. Volver a sacarla si
+  cambia la primera pantalla.
 - `npm run encuadres [id]`: dónde cae cada cosa del bar en pantalla con las cámaras de `site.ts`, sin
   renderizar. Sirve para ajustar una cámara antes de sacar capturas.
 - `?debug` en la URL: estado del director en pantalla. `?gris`: la escena gris en lugar del bar.

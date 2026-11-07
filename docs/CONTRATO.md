@@ -184,6 +184,13 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
   `landing`). El set `director` captura cada sección en los tres tamaños, arma una hoja de contacto por tamaño
   y prueba que la escena vuelva a su estado al ir, volver y saltar, con movimiento reducido y sin 3D.
 - `?debug` muestra el estado del director (sección, tramo, cámara y efectos).
+- Carga (fase 8): la prueba de WebGL solo mira que exista la API (abrir un contexto de prueba costaba 1 s en un
+  celular medio); si el contexto real falla, un ErrorBoundary pasa a la versión estática. Los shaders se
+  compilan con `compileAsync` antes del primer cuadro (con la extensión de compilación en paralelo no traban la
+  página). Archivo se precarga desde el HTML: sin eso, el cambio de fuente corría el panel del inicio.
+- Compartir: `public/og.jpg` (la primera pantalla, 1200 x 630) y `public/apple-touch-icon.png`, con
+  `npm run capture -- og`. Las etiquetas de Open Graph están en `index.html`; la URL absoluta sale de
+  `VITE_SITE_URL` (plugin en `vite.config.ts`, que también agrega la canónica).
 
 ## 7. Fases
 
@@ -193,8 +200,46 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 | 4. Esqueleto HTML | Hecha |
 | 5. Director de scroll y escena gris | Hecha |
 | 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Hecha |
-| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te mira", niveles de calidad, pósters de la versión sin 3D, entrada de la escena, celular acostado | En revisión |
-| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Pendiente |
+| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te mira", niveles de calidad, pósters de la versión sin 3D, entrada de la escena, celular acostado | Hecha |
+| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | En revisión |
 
-Anotado para la fase 8: probar en un celular real. Con la CPU 4 veces más lenta hubo picos aislados de unos
-120 ms en un redibujo, que pueden notarse como un salto.
+### Verificación (fase 8)
+
+Lighthouse móvil (CPU 4x y 4G lenta, Chrome sin GPU). Antes: la primera medición, con la fase 7. Después: cuatro
+corridas del build final, con la mediana y el rango.
+
+| | Antes | Después | Meta |
+|---|---|---|---|
+| LCP | 2.3 s | 2.2–2.3 s | < 2.5 s |
+| CLS | 0.086 | 0 | < 0.1 |
+| TBT | 1.87 s | 1.08 s (0.99–1.17) | lo más bajo posible (anticipa el INP) |
+| Rendimiento / Accesibilidad / Buenas prácticas / SEO | 67 / 100 / 100 / 92 | 75 / 100 / 100 / 100 | |
+
+- Dos corridas intermedias, antes del último ajuste de CSS, dieron TBT de 0,7 s y rendimiento de 80. Esa vez el
+  equipo estaba menos cargado: el índice de benchmark de Lighthouse fue 4322 contra 3686–3978 en las corridas
+  finales, con procesos de Chrome de pruebas anteriores todavía abiertos. En esta máquina el TBT varía unos
+  0,3 s entre corridas, así que el número de un celular real es el que vale.
+
+- Lo que queda del TBT es sobre todo crear el renderer de WebGL (pedir sus extensiones), que en un Chrome sin
+  GPU (SwiftShader) es lento. Con GPU probablemente cueste menos, pero hay que medirlo en un celular real: el INP
+  no se puede medir en laboratorio sin tocar la página.
+- Teclado: el orden es el de lectura (saltar al contenido, barra, botones de cada sección, el campo del nombre,
+  pie) y todo tiene el contorno oro de 2 px.
+- Celular: sin scroll horizontal, áreas de toque de 44 px (salvo el enlace de la licencia, dentro de una
+  oración) y con el texto al 200 % los títulos no se salen de la columna.
+- `impeccable` (audit): el detector marca el borde de color de la placa de nombre; es el componente que define
+  la marca del juego (`brand/COMPONENTES.md` §6), así que se deja. `vercel-react-best-practices`: sin cambios
+  (React no re-renderiza con el scroll; el 3D va en su propio paquete y se pide apenas arranca la página).
+- El director vuelve a pasar completo en 1440, 768 y 390.
+
+Pendiente en un celular real: el INP y los picos de redibujo (con la CPU 4 veces más lenta hubo picos
+aislados de unos 100 ms, que pueden notarse como un salto).
+
+### Publicación
+
+- Es un sitio estático: `npm run build` deja todo en `dist/` (cualquier hosting estático: Vercel, Netlify,
+  Cloudflare Pages). No hace falta reescritura de rutas: es una sola página.
+- Variables al construir: `VITE_GAME_URL` (la dirección del juego, la usan todos los botones "Jugar") y
+  `VITE_SITE_URL` (la de la landing, con barra al final). Las dos están pendientes: TODO(contenido).
+- Caché: `assets/` lleva el hash en el nombre (se puede cachear un año, `immutable`); `index.html`, sin caché.
+

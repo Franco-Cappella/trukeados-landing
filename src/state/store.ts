@@ -31,14 +31,10 @@ export const useUI = create<{
 
 /** Se llama una vez, en un efecto de App: lee WebGL y los parámetros de la URL (?sin3d, ?presentacion, ?debug). */
 export function initUIFromBrowser() {
-  let webgl = false;
-  try {
-    const gl = document.createElement('canvas').getContext('webgl2');
-    webgl = !!gl;
-    gl?.getExtension('WEBGL_lose_context')?.loseContext(); // era solo para probar: se libera el contexto
-  } catch {
-    // sin WebGL: versión estática
-  }
+  // Solo se mira que exista la API: abrir un contexto de prueba costaba casi 1 s con la CPU 4 veces más lenta
+  // de Lighthouse, y la escena abre su propio contexto de todos modos. Si ese no se puede crear, Experience pasa
+  // a la versión estática (ver su ErrorBoundary).
+  const webgl = typeof WebGL2RenderingContext !== 'undefined';
   const q = new URLSearchParams(location.search);
   useUI.setState({
     booted: true,

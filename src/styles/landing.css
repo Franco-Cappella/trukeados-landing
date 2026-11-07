@@ -76,6 +76,12 @@
   background: var(--bg);
 }
 
+.nav__logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* el área de toque, no el logo */
+}
+
 .nav__logo img {
   width: auto;
   height: 28px;
@@ -150,8 +156,11 @@ footer {
   margin: 0;
   font-stretch: var(--wide);
   font-weight: 850;
-  font-size: var(--fs-display);
+  /* Con el texto al 100 % no cambia nada (en 390 da unos 54 px y el tope en vw, 62); con el texto al 200 %
+     evita que "verdad." se salga de la columna. */
+  font-size: min(var(--fs-display), 16vw);
   line-height: var(--lh-display);
+  overflow-wrap: break-word;
   letter-spacing: var(--track-display);
 }
 
@@ -159,7 +168,8 @@ footer {
   margin: 0;
   font-stretch: var(--semi-wide);
   font-weight: 800;
-  font-size: min(var(--fs-title), 3.5rem); /* dos líneas como máximo en la columna de texto */
+  font-size: min(var(--fs-title), 3.5rem, 12vw); /* dos líneas como máximo; 12vw: texto al 200 % en celular */
+  overflow-wrap: break-word;
   line-height: var(--lh-title);
   letter-spacing: var(--track-title);
 }

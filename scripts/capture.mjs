@@ -4,6 +4,7 @@
 //         director (cada sección al final de su tramo en 1440, 768 y 390, y la prueba de ida, vuelta y saltos:
 //         el estado de la escena tiene que coincidir con el esperado en cada sección)
 //         posters (la escena de cada sección sin el texto, en WebP: los pósters de la versión sin 3D)
+//         og (la imagen para compartir, 1200 x 630, y el ícono de iOS, 180 x 180, en public/)
 // Opcional: BASE=<url> (por defecto http://localhost:4173) y CHROME=<ruta al ejecutable>.
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -41,7 +42,7 @@ const VIEWPORTS = [
 ];
 
 const set = process.argv[2] ?? 'estudios';
-const shots = set === 'director' || set === 'posters' ? [] : SETS[set];
+const shots = ['director', 'posters', 'og'].includes(set) ? [] : SETS[set];
 if (!shots) throw new Error(`Set desconocido: ${set}. Opciones: ${Object.keys(SETS).join(', ')}`);
 
 const chromePath = [
@@ -103,6 +104,30 @@ async function posters() {
     console.log(`posters/${s.id}.webp · ${Math.round(fs.statSync(file).size / 1024)} KB`);
   }
   console.log(errors.length ? `errores: ${errors.slice(0, 3).join(' | ')}` : 'sin errores');
+}
+
+// La imagen para compartir (Open Graph): la primera pantalla tal cual, con el título y el botón. Y el ícono
+// de inicio de iOS, que no acepta SVG: el de la app sobre el fondo de la marca, sin esquinas transparentes.
+async function og() {
+  errors.length = 0;
+  await send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
+  await send('Page.navigate', { url: base + '/' });
+  await sleep(9000);
+  let r = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82 });
+  const file = path.join(root, 'public', 'og.jpg');
+  fs.writeFileSync(file, Buffer.from(r.result.data, 'base64'));
+  console.log(`og.jpg · ${Math.round(fs.statSync(file).size / 1024)} KB`);
+
+  await send('Emulation.setDeviceMetricsOverride', { width: 180, height: 180, deviceScaleFactor: 1, mobile: false });
+  await send('Page.navigate', { url: base + '/brand/icono-app.svg' });
+  await sleep(800);
+  await evaluate(`document.documentElement.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg') || '#121212';
+    const svg = document.querySelector('svg'); svg.setAttribute('width', 180); svg.setAttribute('height', 180);
+    svg.querySelector('rect').setAttribute('rx', 0)`);
+  await sleep(300);
+  r = await send('Page.captureScreenshot', { format: 'png' });
+  fs.writeFileSync(path.join(root, 'public', 'apple-touch-icon.png'), Buffer.from(r.result.data, 'base64'));
+  console.log('apple-touch-icon.png', errors.length ? `· errores: ${errors.slice(0, 3).join(' | ')}` : '· sin errores');
 }
 
 // Recorre las secciones con ?debug: captura cada una al final de su tramo y compara window.__rig con
@@ -373,6 +398,7 @@ for (const shot of shots) {
 
 if (set === 'director') await director();
 if (set === 'posters') await posters();
+if (set === 'og') await og();
 
 ws.close();
 chrome.kill();
