@@ -1,7 +1,6 @@
 // De dónde sale cada dato de la landing (archivos del repositorio truco3D). Sin fuente, no va en la página.
 export const sources: Record<string, string> = {
   inicio: 'docs/JUEGO.md §1 y §2 (qué es, gratis) y docs/CUENTAS.md (se entra con Google o mail)',
-  vitrina: 'public/js/config.js (LOOK_OPTS, AMBIENTES, COSMETICS: personajes, lugares, paños y dorsos; TRY_VIEW: probar antes de comprar) y tools/landing-shots.html',
   'a-ciegas': 'Planteo de la landing: no es un dato',
   senas: 'public/js/config.js (SENAS: las 11 señas y su cara)',
   mirada: 'src/truco-room.js (deliverSena: la seña solo le llega a quien te mira) y docs/REGLAS.md',

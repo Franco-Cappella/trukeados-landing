@@ -6,7 +6,10 @@ Proyecto aparte del juego (`../truco3D`, hoy el repositorio `trukeados`). Su ún
 
 Se copia con `npm run sync` (lee `../truco3D`, o la ruta que se pase):
 - `public/cards/`: cartas WebP.
-- `src/game/characters.js`, `theme.js`, `config.js`: personajes en canvas, colores y señas.
+- `src/game/characters.js`, `theme.js`, `config.js`: personajes en canvas, colores y señas (quedan como están: ver
+  `scripts/sync-game.mjs`).
+- `src/game/barrio-chino.js`, `paisaje.js`, `draw3d.js`: la calle del Barrio Chino. `models.js` y
+  `public/models/gato-melon.glb`: el Gato Melón.
 - `public/brand/`: logos SVG.
 - `src/styles/tokens.css`: tokens de marca, sin el `@import` de Google Fonts.
 - `docs/brand/`: documentación de marca para leer.
@@ -59,13 +62,10 @@ escribir "sin cuenta".
 - `src/scroll/`: scroll suave (Lenis + ticker de GSAP), `rig` (estado continuo de la escena) y el director
   (`useStoryTimeline.ts`), que es lo único que escribe en `rig`.
 - `src/state/`: estado discreto (sección, nivel de calidad, versión sin 3D, `?debug`).
-- `src/ui/`: capa de contenido (HTML). `Vitrina.tsx`: después del recorrido, personajes, lugares, paños y
-  dorsos, y todo lo demás que trae el juego (textos en `vitrina` y `extras` de `site.ts`). Sus imágenes están en
-  `public/vitrina/`: los personajes, paños y dorsos salen de `tools/landing-shots.html` del juego (con
-  `node tools/serve.mjs`, llamar a `save()`: quedan en `tools/landing/`); los lugares, de `public/img/mapas/` del
-  juego; Volcho y Olcho, de `public/models/`. Si el juego suma un lugar o un paño, sumarlo acá. Nunca importa `three` ni `@react-three/*`.
+- `src/ui/`: capa de contenido (HTML). Nunca importa `three` ni `@react-three/*`.
 - `src/three/`: escena 3D, en `lazy()`. `Experience.tsx` (canvas fijo), `CameraRig.tsx` (cámara y encuadre),
-  `world/` (el bar del recorrido: escena, personajes y cartas de la trampa), `bar/` (piezas del bar con las
+  `world/` (el recorrido: la mesa en la calle del Barrio Chino del juego, `street.ts`, con el paño bordó; los
+  personajes, con el Gato Melón en 3D a tu derecha, `gato.ts`; y las cartas de la trampa), `bar/` (piezas del bar con las
   medidas del juego) y `gray/` (escena gris de la fase 5, con `?gris`).
 - `src/studies/`: los tres estudios de dirección (`?estudio=a|b|c`), en un paquete aparte.
 

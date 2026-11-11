@@ -112,7 +112,7 @@ async function og() {
   errors.length = 0;
   await send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: base + '/' });
-  await sleep(9000);
+  await stageReady();
   let r = await send('Page.captureScreenshot', { format: 'jpeg', quality: 82 });
   const file = path.join(root, 'public', 'og.jpg');
   fs.writeFileSync(file, Buffer.from(r.result.data, 'base64'));
@@ -238,7 +238,7 @@ async function director() {
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Page.navigate', { url: base + '/?debug' });
-  await sleep(8000);
+  await stageReady();
   const reduced = await evaluate(`(async () => {
     const out = [];
     const secs = [...document.querySelectorAll('[data-section]')];
@@ -270,6 +270,16 @@ async function director() {
   console.log('sin 3D:', flat.stage || flat.three ? `✗ escena montada: ${JSON.stringify(flat)}` : 'sin escena y sin el paquete 3D', errors.length ? `· errores: ${errors.slice(0, 3).join(' | ')}` : '· sin errores');
 
   console.log(fails ? `${fails} estados no coinciden` : 'ida, vuelta, saltos, movimiento reducido y sin 3D: todo coincide');
+}
+
+// Espera a que la escena esté armada (la calle del Barrio Chino y el Gato Melón tardan): hasta que aparece el
+// escenario y 3 segundos más, para que termine de bajar y compilar el gato 3D.
+async function stageReady() {
+  for (let t = 0; t < 30000; t += 500) {
+    if (await evaluate(`!!document.querySelector('.stage[data-listo]')`)) break;
+    await sleep(500);
+  }
+  await sleep(3000);
 }
 
 // Espera a que el servidor (npm run preview) responda.

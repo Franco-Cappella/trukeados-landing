@@ -33,12 +33,13 @@ function grain(ctx: CanvasRenderingContext2D, w: number, h: number, count: numbe
 }
 
 /** Paño: verde con trama, círculo central y el nombre (como en el juego, con el nombre de la marca). */
-export function feltTexture() {
+/** El paño liso: el verde de siempre, o los colores de otro paño de la tienda (centro, medio, borde). */
+export function feltTexture(colors: readonly string[] = SCENE.felt) {
   return canvasTexture(1024, 1024, (ctx, w, h) => {
     const grd = ctx.createRadialGradient(w / 2, h / 2, 60, w / 2, h / 2, w / 2);
-    grd.addColorStop(0, SCENE.felt[0]);
-    grd.addColorStop(0.8, SCENE.felt[1]);
-    grd.addColorStop(1, SCENE.felt[2]);
+    grd.addColorStop(0, colors[0]);
+    grd.addColorStop(0.8, colors[1]);
+    grd.addColorStop(1, colors[2]);
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, w, h);
     ctx.globalAlpha = 0.06;

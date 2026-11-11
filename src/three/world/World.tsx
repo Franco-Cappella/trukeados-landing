@@ -1,6 +1,6 @@
-// El bar del juego: la escena definitiva del recorrido (fase 6). Todo lo que cambia lee `rig.fx` en un solo
-// useFrame y se muta por ref. Las piezas (sala, lámpara, mesa, sillas, cartas) son las de three/bar, con las
-// medidas de scene.js; los personajes son los recortes del juego (cast.ts).
+// La escena del recorrido: la mesa en la calle del Barrio Chino del juego (street.ts), con el paño bordó. Todo lo que cambia lee `rig.fx` en un solo useFrame y se muta por ref. La mesa, las sillas y las
+// cartas son las de three/bar, con las medidas de scene.js; los personajes son los recortes del juego (cast.ts) y
+// el Gato Melón, el personaje 3D de la tienda (gato.ts).
 import { useFrame, useThree } from '@react-three/fiber';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import {
@@ -18,10 +18,12 @@ import { SCENE } from '../../game/theme.js';
 import { site } from '../../content/site';
 import { rig } from '../../scroll/rig';
 import { useUI } from '../../state/store';
-import { Ceiling, ChairModel, Lamp, Room, Table } from '../bar/Bar';
+import { ChairModel, Table } from '../bar/Bar';
 import { CHAIR_OUT, CHAR_H, CHAR_W, PERSON_OUT, TABLE_R, seatAngle } from '../bar/geometry';
 import { castConfig, createActor, redraw, updatePose, type Gaze } from './cast';
 import { TrickCards } from './TrickCards';
+import { gatoPlate, loadGato, poseGato, type Gato } from './gato';
+import { buildStreet, panoTexture } from './street';
 
 const { clamp, lerp, smoothstep } = MathUtils;
 const R4 = TABLE_R[4];
@@ -31,16 +33,16 @@ const SENA_EXPR = Object.values(SENAS).map((s) => (s as { expr: string }).expr);
 /** Quién está en la mesa (los mismos nombres que los textos alternativos de content/site.ts). `seat` fija la
  *  cara; a4/a6: ángulo en la mesa de cuatro (null si no está) y de seis; team: 0 es tu equipo (azul), 1 el otro. */
 const CAST = [
-  { name: 'Coca', seat: 1, a4: seatAngle(1, 4), a6: seatAngle(1, 6), scale: 1, team: 1 }, // a tu derecha
+  { name: 'Gato Melón', seat: 1, a4: seatAngle(1, 4), a6: seatAngle(1, 6), scale: 1, team: 1 }, // a tu derecha, en 3D (gato.ts)
   { name: 'Cacho', seat: 2, a4: seatAngle(2, 4), a6: seatAngle(3, 6), scale: 2, team: 0 }, // enfrente, tu compañero: el del primer plano
   { name: 'Tito', seat: 3, a4: seatAngle(3, 4), a6: seatAngle(5, 6), scale: 1, team: 1 }, // a tu izquierda, compañero de Coca
   { name: 'Mirta', seat: 2, a4: null, a6: seatAngle(2, 6), scale: 1, team: 0 }, // llegan con la mesa de seis
   { name: 'Chacho', seat: 4, a4: null, a6: seatAngle(4, 6), scale: 1, team: 1 },
 ] as const;
-const COCA = 0;
+const GATO = 0;
 const CACHO = 1;
 const TITO = 2;
-const PLATES = [COCA, CACHO, TITO]; // los que te miran al final
+const PLATES = [GATO, CACHO, TITO]; // los que te miran al final
 const PLATE_Y = 1.74; // la placa, apenas arriba de la cabeza (la cabeza dibujada termina en ~1,65 m)
 // La placa se ubica por su centro: arriba, la barra (hasta 64 px), 8 px de aire y la mitad de la placa (unos 15 px).
 const PLATE_MARGIN = { x: 76, top: 88, bottom: 24 }; // la placa nunca se sale de la pantalla ni queda bajo la barra
@@ -91,11 +93,31 @@ export function World() {
     return () => els.forEach((el) => el.remove());
   }, [gl]);
   const cam = useMemo(() => new Vector3(), []);
+  const street = useMemo(() => buildStreet(), []);
+  const felt = useMemo(() => panoTexture(), []);
+  const gatoHost = useRef<Group>(null);
+  const gato = useRef<Gato | null>(null);
+  useEffect(() => {
+    let alive = true;
+    loadGato()
+      .then((g) => {
+        if (!alive || !gatoHost.current) return;
+        gato.current = g;
+        gatoHost.current.add(g.rig.root);
+      })
+      .catch((e) => console.warn('Gato Melón', e));
+    return () => {
+      alive = false;
+      gato.current?.rig.dispose();
+      gato.current = null;
+    };
+  }, []);
 
   useFrame((state, delta) => {
     const fx = rig.fx;
     const dt = Math.min(delta, 0.1);
     cam.copy(state.camera.position);
+    street.update?.(performance.now(), dt);
 
     // Mesa: de cuatro a seis lugares. Cambia de forma a mitad de camino, con un pulso que lo hace notar.
     const six = fx.six;
@@ -120,7 +142,7 @@ export function World() {
         p.position.copy(actors[i].pos);
         p.rotation.y = Math.atan2(cam.x - p.position.x, cam.z - p.position.z); // billboard, como el juego
         p.scale.setScalar(Math.max(s, 0.001));
-        p.visible = s > 0.01;
+        p.visible = s > 0.01 && i !== GATO; // el del gato es 3D: su recorte no se ve
       }
       if (ch) {
         ch.position.set(Math.sin(a) * (R + CHAIR_OUT), 0, Math.cos(a) * (R + CHAIR_OUT));
@@ -143,11 +165,21 @@ export function World() {
     });
     gazes[CACHO].camWeight = Math.max(fx.closeup, fx.seated);
     gazes[CACHO].expr = fx.closeup > 0.5 ? SENA_EXPR[senaIdx] : 'neutral';
-    gazes[COCA].at = actors[TITO].pos;
-    gazes[COCA].atWeight = fx.gaze;
-    gazes[TITO].at = actors[COCA].pos;
+    gazes[GATO].at = actors[TITO].pos;
+    gazes[GATO].atWeight = fx.gaze;
+    gazes[TITO].at = actors[GATO].pos;
     gazes[TITO].atWeight = fx.gaze;
     gazes[TITO].expr = fx.gaze > 0.6 ? 'wink' : 'neutral';
+
+    const g = gato.current;
+    if (g) {
+      const a = lerp(CAST[GATO].a4, CAST[GATO].a6, six);
+      // de entrada te mira de reojo (es un gato); en "mirada" mira a Tito; sentado, te mira de frente
+      const tito = fx.gaze > 0.01 && fx.seated < 0.01;
+      const w = tito ? fx.gaze : Math.max(0.4, fx.seated);
+      poseGato(g, a, R, tito ? actors[TITO].pos : cam, w, dt, state.clock.elapsedTime * 1000);
+      g.mats.forEach((m) => m.color.setScalar(lerp(1, 0.3, fx.dim)));
+    }
 
     actors.forEach((a, i) => {
       needs[i] = (people.current[i]?.visible ?? false) && updatePose(a, cam, gazes[i], dt);
@@ -166,7 +198,9 @@ export function World() {
     PLATES.forEach((who, k) => {
       const el = plates.current[k];
       if (!el) return;
-      plateAt.set(actors[who].pos.x, PLATE_Y, actors[who].pos.z).project(state.camera);
+      if (who === GATO && g) gatoPlate(g, plateAt);
+      else plateAt.set(actors[who].pos.x, PLATE_Y, actors[who].pos.z);
+      plateAt.project(state.camera);
       const show = plate > 0.01 && plateAt.z < 1; // z > 1: detrás de la cámara
       el.style.visibility = show ? 'visible' : 'hidden';
       if (!show) return;
@@ -177,7 +211,8 @@ export function World() {
     });
 
     // Luz: a ciegas baja todo menos la lámpara sobre el paño; en el primer plano, una luz cálida en la cara.
-    if (hemi.current) hemi.current.intensity = lerp(0.9, 0.22, fx.dim);
+    if (hemi.current) hemi.current.intensity = lerp(0.35, 0.1, fx.dim);
+    for (const { light, base } of street.lights) light.intensity = base * lerp(1, 0.2, fx.dim);
     if (fill.current) fill.current.intensity = lerp(6, 1.2, fx.dim);
     if (front.current) front.current.intensity = lerp(4, 0.8, fx.dim);
     if (key.current) key.current.intensity = 6 * fx.closeup;
@@ -185,21 +220,19 @@ export function World() {
 
   return (
     <group>
-      <color attach="background" args={[SCENE.background]} />
-      <fog attach="fog" args={[SCENE.fog, 6, 15]} />
-      <hemisphereLight ref={hemi} args={[SCENE.hemiSky, SCENE.hemiGround, 0.9]} />
+      <color attach="background" args={[street.background]} />
+      <fog attach="fog" args={street.fog} />
+      <hemisphereLight ref={hemi} args={[SCENE.hemiSky, SCENE.hemiGround, 0.35]} />
       <pointLight ref={fill} position={[-2.5, 2.2, -2]} color={SCENE.fill} intensity={6} distance={9} decay={1.4} />
       <pointLight ref={front} position={[0, 2.2, 2.6]} color={SCENE.lamp} intensity={4} distance={6} decay={1.5} />
       <pointLight ref={key} position={[0.35, 1.75, -0.3]} color={SCENE.lamp} intensity={0} distance={2.4} decay={1.5} />
-      <Room />
-      <Ceiling />
-      <Lamp intensity={34} />
+      <primitive object={street.group} />
 
       <group ref={table4}>
-        <Table n={4} R={R4} />
+        <Table n={4} R={R4} felt={felt} />
       </group>
       <group ref={table6} visible={false}>
-        <Table n={6} R={R6} />
+        <Table n={6} R={R6} felt={felt} />
       </group>
 
       {/* tu silla, vacía hasta que te sentás */}
@@ -224,6 +257,8 @@ export function World() {
           />
         </mesh>
       ))}
+
+      <group ref={gatoHost} />
 
       <Suspense fallback={null}>
         <TrickCards />

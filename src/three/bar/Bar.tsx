@@ -159,9 +159,9 @@ const BOTTLE = [
 ].map(([x, y]) => new Vector2(x, y));
 
 /** Mesa de bar con marco de madera, paño, faldón, patas y los objetos de la mesa. */
-export function Table({ n, R }: { n: number; R: number }) {
+export function Table({ n, R, felt: painted }: { n: number; R: number; felt?: Texture }) {
   const sides = n === 6 ? 6 : 4;
-  const felt = useMemo(() => feltTexture(), []);
+  const felt = useMemo(() => painted ?? feltTexture(), [painted]);
   const wood = useMemo(() => woodTexture(), []);
   const geo = useMemo(() => {
     const feltGeo = new ShapeGeometry(polyShape(sides, R, 0.16), 24);
