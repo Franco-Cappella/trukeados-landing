@@ -15,7 +15,7 @@ const COPY: Record<StudyId, { nombre: string; titulo: string; bajada: string }> 
   a: {
     nombre: 'La puerta',
     titulo: 'Truco de verdad.',
-    bajada: 'Trukeados es truco argentino online, en 3D, en la mesa de un bar. Gratis y sin cuenta.',
+    bajada: 'Trukeados es truco argentino online, en 3D, en la mesa de un bar. Gratis, en el navegador y en el celular.',
   },
   b: {
     nombre: 'Desde arriba',

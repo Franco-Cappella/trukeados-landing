@@ -1,6 +1,6 @@
 # Landing de Trukeados: guía para agentes
 
-Proyecto aparte del juego (`../truco3D`). Su único trabajo es presentar el juego y llevar a jugarlo.
+Proyecto aparte del juego (`../truco3D`, hoy el repositorio `trukeados`). Su único trabajo es presentar el juego y llevar a jugarlo.
 
 ## Qué viene del juego (no editar acá)
 
@@ -25,6 +25,13 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 - El 3D nunca es el LCP. La landing se lee, y la CTA funciona, sin 3D ni animación.
 - Con movimiento reducido, la escena se muestra en su estado final sin recorrido.
 - Los commits solo se hacen cuando lo pide la persona.
+
+## Buscadores e IAs
+
+`index.html` lleva título, descripción, datos estructurados (VideoGame, WebSite, Organization y FAQPage) y un
+`<noscript>` con texto. Además `public/robots.txt` (buscadores y asistentes de IA permitidos), `sitemap.xml` y
+`llms.txt` (copia del juego, con el enlace a esta página). Se entra al juego con cuenta (Google o mail): no
+escribir "sin cuenta".
 
 ## Comandos
 
@@ -52,7 +59,11 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 - `src/scroll/`: scroll suave (Lenis + ticker de GSAP), `rig` (estado continuo de la escena) y el director
   (`useStoryTimeline.ts`), que es lo único que escribe en `rig`.
 - `src/state/`: estado discreto (sección, nivel de calidad, versión sin 3D, `?debug`).
-- `src/ui/`: capa de contenido (HTML). Nunca importa `three` ni `@react-three/*`.
+- `src/ui/`: capa de contenido (HTML). `Vitrina.tsx`: después del recorrido, personajes, lugares, paños y
+  dorsos, y todo lo demás que trae el juego (textos en `vitrina` y `extras` de `site.ts`). Sus imágenes están en
+  `public/vitrina/`: los personajes, paños y dorsos salen de `tools/landing-shots.html` del juego (con
+  `node tools/serve.mjs`, llamar a `save()`: quedan en `tools/landing/`); los lugares, de `public/img/mapas/` del
+  juego; Volcho y Olcho, de `public/models/`. Si el juego suma un lugar o un paño, sumarlo acá. Nunca importa `three` ni `@react-three/*`.
 - `src/three/`: escena 3D, en `lazy()`. `Experience.tsx` (canvas fijo), `CameraRig.tsx` (cámara y encuadre),
   `world/` (el bar del recorrido: escena, personajes y cartas de la trampa), `bar/` (piezas del bar con las
   medidas del juego) y `gray/` (escena gris de la fase 5, con `?gris`).

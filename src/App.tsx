@@ -8,6 +8,7 @@ import { initUIFromBrowser, useUI } from './state/store';
 import { Footer } from './ui/Footer';
 import { Nav } from './ui/Nav';
 import { Section } from './ui/Section';
+import { Vitrina } from './ui/Vitrina';
 
 // La escena 3D va en su propio paquete: esta capa (HTML real) nunca importa three ni @react-three/*.
 const Experience = lazy(() => import('./three/Experience'));
@@ -43,6 +44,7 @@ export function App() {
           <Section key={s.id} s={s} i={i} />
         ))}
       </main>
+      <Vitrina />
       <Footer />
       {debug && (
         <Suspense fallback={null}>

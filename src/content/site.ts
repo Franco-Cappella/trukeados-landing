@@ -47,7 +47,7 @@ const sections: Section[] = [
   {
     id: 'inicio',
     title: 'Truco de verdad.',
-    body: ['Trukeados es truco argentino online, en 3D, en la mesa de un bar. Gratis y sin cuenta.'],
+    body: ['Trukeados es truco argentino online, en 3D, en la mesa de un bar. Gratis, en el navegador y en el celular.'],
     weight: 1.2,
     // De pie en la puerta: la lámpara, la mesa y tu silla arriba; el título abajo (estudio A).
     camera: { position: [0, 2.0, 5.0], target: [0, 1.3, 0], fov: 50, frame: [0, 0.12] },
@@ -160,7 +160,90 @@ export const site = {
   nav: [
     { id: 'senas', label: 'Señas' },
     { id: 'trampa', label: 'Trampa' },
-    { id: 'mesas', label: 'Mesas' },
+    { id: 'personaje', label: 'Personajes' },
+    { id: 'lugares', label: 'Lugares' },
   ],
   sections,
+};
+
+/**
+ * Vitrina: lo que se ve y se elige en el juego, después del recorrido (sin 3D: imágenes en public/vitrina/, que
+ * salen de tools/landing-shots.html del juego y de sus fotos de mapas y personajes).
+ */
+export type Pieza = { src: string; name: string; w: number; h: number };
+export type Bloque = { id: string; title: string; body: string[]; kind: 'personajes' | 'lugares' | 'panos'; items: Pieza[] };
+
+const persona = (n: number): Pieza => ({ src: `/vitrina/personajes/personaje-${n}.webp`, name: `Personaje ${n}`, w: 512, h: 1200 });
+const lugar = (id: string, name: string): Pieza => ({ src: `/vitrina/mapas/${id}.webp`, name, w: 640, h: 400 });
+const pano = (id: string, name: string): Pieza => ({ src: `/vitrina/panos/${id}.webp`, name, w: 720, h: 720 });
+
+export const vitrina: Bloque[] = [
+  {
+    id: 'personaje',
+    title: 'Armá tu personaje.',
+    body: [
+      'Piel, cara, pelo, barba, ropa y la bandera en el pecho: parte por parte, o con un toque en Aleatorio. Así te ven en la mesa.',
+      'Y en la tienda hay personajes en 3D, como Volcho y Olcho, que hacen las señas con la cara.',
+    ],
+    kind: 'personajes',
+    items: [
+      ...[1, 2, 3, 4, 5, 6].map(persona),
+      { src: '/vitrina/personajes/volcho.webp', name: 'Volcho, en 3D', w: 256, h: 280 },
+      { src: '/vitrina/personajes/olcho.webp', name: 'Olcho, en 3D', w: 256, h: 280 },
+    ],
+  },
+  {
+    id: 'lugares',
+    title: 'Nueve lugares para sentarte.',
+    body: [
+      'Del bar notable al Barrio Chino, pasando por la parrilla, el café, los Bosques de Palermo, el quincho, el club y la estancia. Y la Noche estrellada, pintada pincelada por pincelada.',
+      'Si equipás tu lugar, la mesa es ahí. Antes de comprarlo, lo probás.',
+    ],
+    kind: 'lugares',
+    items: [
+      lugar('noche', 'Noche estrellada'),
+      lugar('chinatown', 'Barrio Chino'),
+      lugar('bar', 'Bar notable'),
+      lugar('cafe', 'Café porteño'),
+      lugar('parrilla', 'Parrilla de barrio'),
+      lugar('parque', 'Bosques de Palermo'),
+      lugar('quincho', 'Quincho'),
+      lugar('club', 'Club de barrio'),
+      lugar('campo', 'Estancia'),
+    ],
+  },
+  {
+    id: 'panos',
+    title: 'Paños y dorsos dibujados a mano.',
+    body: [
+      'Alfombra persa, fileteado porteño, poncho salteño, baldosa calcárea, el paño de casino o la mesa de bodegón.',
+      'En cada turno se ve el paño y el dorso del que juega: la mesa cambia de mano en mano.',
+    ],
+    kind: 'panos',
+    items: [
+      pano('pano-estrellada', 'Noche estrellada'),
+      pano('pano-fileteado', 'Fileteado porteño'),
+      pano('pano-alfombra', 'Alfombra persa'),
+      pano('pano-poncho', 'Poncho salteño'),
+      pano('pano-calcareo', 'Baldosa calcárea'),
+      pano('pano-almendro', 'Almendro en flor'),
+      pano('pano-casino', 'Paño de casino'),
+      pano('pano-noche', 'Noche de campo'),
+      pano('pano-madera', 'Mesa de bodegón'),
+      { src: '/vitrina/panos/dorso-estrellada.webp', name: 'Dorso noche estrellada', w: 512, h: 788 },
+    ],
+  },
+];
+
+/** Todo lo demás que trae el juego (config.js: MODES, ROOM_CODE_LEN, COINS, COSMETICS; docs/JUEGO.md). */
+export const extras = {
+  title: 'Y todo lo que pide una mesa.',
+  items: [
+    { name: 'Partida rápida', text: 'Te sienta con gente de tu nivel: ranking por ELO y revancha.' },
+    { name: 'Con amigos', text: 'Una sala privada con un código de cuatro números, para pasar por WhatsApp.' },
+    { name: 'Contra bots', text: 'Para practicar cuando quieras: aprenden cómo jugás.' },
+    { name: 'Mesas en vivo', text: 'Mirás las partidas que se están jugando, como en el bar.' },
+    { name: 'Chat y frases', text: 'Cantos con voz, frases y chat. Y si alguien molesta, lo silenciás.' },
+    { name: 'Tienda', text: 'Monedas que ganás jugando, para lugares, paños, dorsos, ropa y personajes.' },
+  ],
 };
