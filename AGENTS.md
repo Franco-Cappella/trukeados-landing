@@ -1,10 +1,10 @@
 # Landing de Trukeados: guía para agentes
 
-Proyecto aparte del juego (`../truco3D`, hoy el repositorio `trukeados`). Su único trabajo es presentar el juego y llevar a jugarlo.
+Proyecto aparte del juego (el repositorio `TRUKEADOS`). Su único trabajo es presentar el juego y llevar a jugarlo.
 
 ## Qué viene del juego (no editar acá)
 
-Se copia con `npm run sync` (lee `../truco3D`, o la ruta que se pase):
+Se copia con `npm run sync` (lee `../TRUKEADOS`, o la ruta que se pase):
 - `public/cards/`: cartas WebP.
 - `src/game/characters.js`, `theme.js`, `config.js`: personajes en canvas, colores y señas (quedan como están: ver
   `scripts/sync-game.mjs`).
@@ -12,8 +12,7 @@ Se copia con `npm run sync` (lee `../truco3D`, o la ruta que se pase):
   `public/models/gato-melon.glb`: el Gato Melón.
 - `public/brand/`: logos SVG.
 - `src/styles/tokens.css`: tokens de marca, sin el `@import` de Google Fonts.
-- `brand/`, `DESIGN.md` y `docs/landing/`: documentación de diseño. Es la misma que en TRUKEADOS: se edita en
-  cualquiera de los dos y se sincroniza con `npm run diseno:sync` (ver DESIGN.md).
+- `brand/`, `DESIGN.md` y `docs/landing/`: documentación de diseño, igual que en TRUKEADOS (`npm run diseno:sync`, ver DESIGN.md).
 
 Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 

@@ -6,8 +6,8 @@ dirección.
 **Aprobado el 2026-11-06.** Dirección elegida: **A como mundo, con momentos de C y de B** (sección 5).
 El juego está en `https://game.trukeados.com` y la landing en `https://trukeados.com` (2026-11-07).
 
-Marca: [brand/BRAND.md](brand/BRAND.md) y [brand/PAGINAS.md](brand/PAGINAS.md) (copias del juego).
-Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco3D`.
+Marca: [brand/BRAND.md](brand/BRAND.md) y [brand/PAGINAS.md](brand/PAGINAS.md) (copias del juego, ver `DESIGN.md`).
+Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` del repositorio TRUKEADOS.
 
 ## 1. Brief
 
@@ -19,7 +19,7 @@ Contenido del juego: `docs/JUEGO.md` y `docs/REGLAS.md` en el repositorio `truco
 | Acción principal | **Jugar ahora** → `VITE_GAME_URL` (el menú del juego). Secundaria, más callada: **Practicar con bots**, que va al mismo menú hasta que el juego acepte parámetros (ver `brand/ALINEACION.md` §3 en el juego). |
 | Fuente del contenido | El juego: reglas, señas, modos y tiempos reales. Sin métricas, testimonios, logos ni citas inventadas. |
 | Dónde se ve | Celular primero, escritorio después. Importa el SEO y cómo se ve el link en WhatsApp (título, descripción, imagen). |
-| Proyecto | Nuevo: `repository/truco3D-landing`, React 19 + Vite + TypeScript, R3F + GSAP + Lenis. |
+| Proyecto | `trukeados-landing`, React 19 + Vite + TypeScript, R3F + GSAP + Lenis. |
 | URLs | Juego: `https://game.trukeados.com`. Landing: `https://trukeados.com`. La landing en Vercel y el juego en Cloudflare Workers. |
 
 ## 2. Nivel: 3, mundo de scroll
@@ -48,7 +48,7 @@ Una sección es una idea y un encuadre de cámara.
 | 7 | `sentate` | Acción | La vista desde tu silla, la misma del juego: los tres jugadores te miran. | La mesa está servida. | Poné tu nombre y mirá cómo te ven. Después, a jugar. | `characters.js` (`lookFor`) | La cámara se sienta | 1.4 |
 
 CTA: **Jugar ahora** en la primera pantalla y en la sección 7, con la misma etiqueta en todo el recorrido.
-Después de la sección 7 va el pie, con los créditos (cartas CC BY-SA 3.0, Archivo OFL).
+Después de la sección 7 va el pie, con los créditos ([brand/RECURSOS.md](brand/RECURSOS.md) §1).
 
 **Coreografía** (fase 5). Cada sección dura `weight` pantallas: la primera es la llegada (viaja la cámara) y el
 resto, la estadía (el texto queda fijo). Lo que cambia en la escena se reparte así:
@@ -78,35 +78,23 @@ cara. El nombre todavía no viaja al juego; para eso hace falta el cambio `?nomb
 
 ## 4. Biblia de estilo
 
-> **Pendiente de migrar (2026-11-12).** La marca pasó a **blanco y negro, grotesk** (Hanken Grotesk, negro, blanco y
-> grises, botón principal blanco, rojo solo para errores, esquinas de 2 px; ver `DESIGN.md`). Esta biblia y
-> el código de la landing todavía describen el sistema anterior (Archivo, oro, paño como campo de color). La lista de
-> cambios está en `brand/ALINEACION.md` §2 del juego. Hasta migrar, lo de abajo describe la landing tal como está.
+Clima, metáfora y materiales de la landing. Color y tipografía, en [brand/BRAND.md](brand/BRAND.md) §3 y §4. La landing
+todavía no aplica esos valores: ver [brand/ALINEACION.md](brand/ALINEACION.md) §2.
 
 - **Clima**: nocturno, de barrio, en voz baja (como cuando se pasa una seña).
 - **Metáfora**: el bar. El scroll es entrar y sentarte a la mesa.
-- **Paleta** (toda de `tokens.css`, sin colores nuevos):
-  - Campo: el bar en penumbra, `--bar` `#1a120c` en la escena y `--bg` `#121212` en la interfaz.
-  - Tinta: `--text` `#f5f5f5`.
-  - Luz: `--lampara` `#ffd9a0`, la única fuente cálida.
-  - Paño: `--pano` `#2e7344` y `--pano-3` `#1a4529`.
-  - Acento con significado: `--oro` `#f2c12e`, solo en "Jugar ahora" y en el instante en que alguien te mira.
-  - Trampa: `--copa` `#d93b30`, solo en la carta quemada y en "¡Mostrá las dos!".
-- **Tipografía**: Archivo, una sola familia. Display en 125 % y peso 850; lectura en 100 % y 400; rótulos en 78 %.
-- **Materiales**: paño mate, madera barnizada, vidrio, cartón de naipe, pared pintada. Los personajes son
-  dibujos 2D sobre planos, como en el juego. Solo brilla la lámpara.
-- **Movimiento dominante**: travelling hacia la mesa, cabezas que giran para mirar, cartas que se asientan.
-  Una sola cámara continua.
+- **Luz**: la lámpara es la única fuente cálida; el resto, en penumbra.
+- **Materiales**: paño mate, madera barnizada, vidrio, cartón de naipe, pared pintada. Los personajes son dibujos 2D sobre
+  planos, como en el juego. Solo brilla la lámpara.
+- **Movimiento dominante**: travelling hacia la mesa, cabezas que giran para mirar, cartas que se asientan. Una sola cámara continua.
 - **Ritmo**: lento al entrar, rápido en las señas, pausa en la trampa, quieto al sentarse.
-- **Excepción: reflejo de moneda** (decisión del usuario, 2026-11-07; ver «Después del cierre»). Solo en los botones
-  dorados (`.btn--primary`): un reflejo cruza el oro una vez al pasar el mouse o llegar con el teclado. Sin resplandor,
-  sin degradé en el texto, sin loop, y apagado con movimiento reducido. Es la única excepción al cliché 2.
+- **Excepción**: el reflejo de moneda de los botones dorados; ver «Después del cierre».
 - **Tres clichés que se evitan**:
   1. Partículas o humo flotando "de ambiente".
   2. Brillo en todo: bloom, neón, dorado de casino.
   3. Texto sobre vidrio esmerilado o tarjetas con sombra encima de la escena.
-- **Texto sobre la escena**: sobre una sombra neutra (degradé de `--bg`, la única excepción que permite la
-  marca), con contraste de 4,5:1 o más. En celular, el texto va abajo y la escena arriba.
+- **Texto sobre la escena**: sobre una sombra neutra (degradé de `--bg`, la única excepción que permite la marca), con
+  contraste de 4,5:1 o más. En celular, el texto va abajo y la escena arriba.
 
 ## 5. Estudios de dirección
 
@@ -150,15 +138,11 @@ relación entre texto y escena. Se ven en `npm run dev`, en `/?estudio=a`, `/?es
 
 ### Recomendación
 
-**A como mundo, con momentos de C y de B.** Es un solo bar y una sola cámara continua, como pide el nivel 3.
-La sección de señas usa el primer plano de C, la de la trampa baja a la vista cenital de B, y el final se sienta
-en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
+**A como mundo, con momentos de C y de B**: un solo bar y una sola cámara continua, como pide el nivel 3. Las señas usan
+el primer plano de C; la trampa baja a la vista cenital de B; el final se sienta en tu silla.
 
 ## 6. Estado técnico
 
-- Las piezas del bar (sala, techo, lámpara, mesa, sillas, personajes, fichas, cartas) están en
-  `src/three/bar/` con las medidas de `scene.js`, y la escena final las reutiliza. Los estudios están en
-  `src/studies/` y cargan aparte (`?estudio=a|b|c`).
 - El director de scroll (`src/scroll/useStoryTimeline.ts`) es lo único que escribe en `rig`: la cámara viaja
   en la llegada de cada sección y los efectos cambian según la coreografía (sección 3).
 - `src/three/Experience.tsx` es el canvas fijo, en `lazy()`: la capa DOM no importa three. Dibuja el bar
@@ -170,7 +154,6 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 - Mientras Cacho hace las señas, la leyenda marca la que está haciendo (`ui/SenasList.tsx` lee `rig`).
 - La carta quemada en primer plano usa bordes carbonizados sin brasas (`charredTexture`), como la versión
   sin 3D: las brasas del juego, a ese tamaño y bajo la lámpara, se veían como manchas naranjas.
-- `?gris` muestra la escena gris de la fase 5 (`src/three/gray/`), para ajustar tiempos sin el arte.
 - El instante dorado (fase 7): al sentarte aparecen las placas de nombre del juego arriba de cada jugador
   (`brand/COMPONENTES.md` §6), con "te mira" en oro. Son HTML sobre el canvas, se ubican en cada cuadro y
   nunca salen de la pantalla: desde tu silla, Coca y Tito quedan en los bordes.
@@ -179,26 +162,15 @@ en tu silla. No mezcla modos: son encuadres distintos dentro del mismo mundo.
 - Niveles de calidad: `PerformanceMonitor` baja al nivel bajo si caen los cuadros por segundo (resolución 1 y
   un redibujo de personaje por cuadro) y sube si se recuperan.
 - Sin postprocesado: la biblia de estilo evita el bloom, y la lámpara y la niebla ya cierran los bordes.
-- Pósters de la versión sin 3D: `npm run capture -- posters` saca la escena de cada sección, centrada y sin
-  el texto, en WebP (`public/posters/`, 240 KB los siete). Se vuelven a sacar si cambia una escena o una cámara.
 - Celular acostado: todo al tamaño mínimo de la marca y la columna de texto más angosta.
 - Costo de los personajes, medido con la CPU 4 veces más lenta (celular medio): unos 180 redibujos al recorrer
   toda la página, de 6 ms en promedio.
 - Pesos: la landing, 132 KB gzip (límite 150); el paquete 3D, 256 KB gzip (límite 350). Como mucho 64 draw
   calls y 10 mil triángulos por cuadro (límites 150 y 500 mil).
-- `npm run encuadres` calcula, sin renderizar, dónde cae cada cara, la mesa y las cartas en 1440, 768 y 390, y
-  avisa si algo queda debajo del texto o fuera del cuadro.
-- Capturas: `npm run build && npm run preview`, y en otra terminal `npm run capture -- director` (o `estudios`,
-  `landing`). El set `director` captura cada sección en los tres tamaños, arma una hoja de contacto por tamaño
-  y prueba que la escena vuelva a su estado al ir, volver y saltar, con movimiento reducido y sin 3D.
-- `?debug` muestra el estado del director (sección, tramo, cámara y efectos).
 - Carga (fase 8): la prueba de WebGL solo mira que exista la API (abrir un contexto de prueba costaba 1 s en un
   celular medio); si el contexto real falla, un ErrorBoundary pasa a la versión estática. Los shaders se
   compilan con `compileAsync` antes del primer cuadro (con la extensión de compilación en paralelo no traban la
-  página). Archivo se precarga desde el HTML: sin eso, el cambio de fuente corría el panel del inicio.
-- Compartir: `public/og.jpg` (la primera pantalla, 1200 x 630) y `public/apple-touch-icon.png`, con
-  `npm run capture -- og`. Las etiquetas de Open Graph están en `index.html`; la URL absoluta sale de
-  `VITE_SITE_URL` (plugin en `vite.config.ts`, que también agrega la canónica).
+  página). La fuente se precarga desde el HTML: sin eso, el cambio de fuente corría el panel del inicio.
 
 ## 7. Fases
 
@@ -232,7 +204,7 @@ corridas del build final, con la mediana y el rango.
   GPU (SwiftShader) es lento. Con GPU probablemente cueste menos, pero hay que medirlo en un celular real: el INP
   no se puede medir en laboratorio sin tocar la página.
 - Teclado: el orden es el de lectura (saltar al contenido, barra, botones de cada sección, el campo del nombre,
-  pie) y todo tiene el contorno oro de 2 px.
+  pie) y todo tiene contorno dorado de 2 px (la migración lo pasa a blanco).
 - Celular: sin scroll horizontal, áreas de toque de 44 px (salvo el enlace de la licencia, dentro de una
   oración) y con el texto al 200 % los títulos no se salen de la columna.
 - `impeccable` (audit): el detector marca el borde de color de la placa de nombre; es el componente que define
@@ -250,7 +222,7 @@ aislados de unos 100 ms, que pueden notarse como un salto).
   - Las placas de Tito y de Coca quedaban bajo la barra de navegación en escritorio (el borde superior estaba en
     y = 61 y la barra llega a 64). Como la placa se ubica por su centro, el margen superior pasó de 76 a 88 px.
     Medido en 1440, 390 y 844 x 390: ninguna placa tapada.
-  - La selección de texto es oro con tinta oscura, como los botones.
+  - La selección de texto es dorada con tinta oscura, como los botones; la migración la cambia (ALINEACION §2).
 - Excepción registrada en `.impeccable/config.json`: `side-tab` solo en `src/styles/landing.css`. Es el borde de
   equipo de la placa de nombre, que define `brand/COMPONENTES.md` §6. El detector queda en cero hallazgos.
 - Landing cerrada. Queda fuera de esta fase: probar en un celular real (INP y picos al redibujar personajes),
@@ -263,19 +235,6 @@ aislados de unos 100 ms, que pueden notarse como un salto).
   dentro de `(hover: hover) and (pointer: fine)`, con su versión de movimiento reducido aparte. Contradice
   `brand/PAGINAS.md` §4 y `brand/BRAND.md` (sin brillos ni degradés en botones) y el cliché 2 de esta biblia; por
   eso queda como excepción documentada.
-- Pendiente en la documentación (se edita en TRUKEADOS o acá, y `npm run diseno:sync` la pasa al otro repo): agregar la excepción en
-  `brand/PAGINAS.md` §4 y `brand/BRAND.md`, y el token `--oro-hover` en `brand/tokens.css` (lo propone
-  `brand/ALINEACION.md` §4). Hoy el hover usa `#f5cc4f` escrito a mano en `base.css`.
+- Pendiente: decidir si el reflejo se quita con la migración a blanco y negro. `brand/PAGINAS.md` §4 y `brand/BRAND.md` §3 no permiten brillos, así que la migración lo quita salvo que se decida otra cosa.
 - Sin verificar en el navegador todavía: el botón grande (`btn--big`), el foco por teclado y el recorrido en 768 y
   390 con el efecto. Comparten la regla del hover, pero no se midieron.
-
-### Publicación
-
-- Es un sitio estático: `npm run build` deja todo en `dist/`. Se publica en Vercel desde `main`. No hace falta reescritura de
-  rutas: es una sola página.
-- Variables al construir: `VITE_GAME_URL` (la dirección del juego, la usan todos los botones "Jugar") y
-  `VITE_SITE_URL` (la de la landing, con barra al final). Sin definir, el build usa `https://game.trukeados.com`
-  y `https://trukeados.com/`.
-- Caché: `assets/` lleva el hash en el nombre y se cachea un año, `immutable` (`vercel.json`); `index.html`,
-  sin caché.
-
