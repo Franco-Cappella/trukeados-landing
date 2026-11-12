@@ -78,6 +78,11 @@ cara. El nombre todavía no viaja al juego; para eso hace falta el cambio `?nomb
 
 ## 4. Biblia de estilo
 
+> **Pendiente de migrar (2026-11-12).** La marca pasó a **blanco y negro, grotesk** (Hanken Grotesk, negro, blanco y
+> grises, botón principal blanco, rojo solo para errores, esquinas de 2 px; ver `docs/brand/DESIGN.md`). Esta biblia y
+> el código de la landing todavía describen el sistema anterior (Archivo, oro, paño como campo de color). La lista de
+> cambios está en `brand/ALINEACION.md` §2 del juego. Hasta migrar, lo de abajo describe la landing tal como está.
+
 - **Clima**: nocturno, de barrio, en voz baja (como cuando se pasa una seña).
 - **Metáfora**: el bar. El scroll es entrar y sentarte a la mesa.
 - **Paleta** (toda de `tokens.css`, sin colores nuevos):
