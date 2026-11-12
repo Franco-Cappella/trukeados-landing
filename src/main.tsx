@@ -1,6 +1,6 @@
-// Archivo con los dos ejes (ancho 62–125 y peso 100–900): la marca usa font-stretch.
-import '@fontsource-variable/archivo/wdth.css';
-import './styles/tokens.css';
+// Hanken Grotesk autoalojada, eje de peso (la marca usa 400–800). Los tokens son los de brand/ (iguales al juego).
+import '@fontsource-variable/hanken-grotesk/wght.css';
+import '../brand/tokens.css';
 import './styles/base.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

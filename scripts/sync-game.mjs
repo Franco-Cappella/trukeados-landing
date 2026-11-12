@@ -47,16 +47,7 @@ for (const f of fs.readdirSync(need(path.join(game, 'brand', 'logo')))) {
   if (f.endsWith('.svg')) copy(path.join(game, 'brand', 'logo', f), out('public', 'brand', f));
 }
 
-// 4. Tokens de marca. Se quita el @import de Google Fonts: las fuentes se autoalojan.
-{
-  const css = fs
-    .readFileSync(need(path.join(game, 'brand', 'tokens.css')), 'utf8')
-    .replace(/^@import url\([^)]*\);\s*$/m, '');
-  const to = out('src', 'styles', 'tokens.css');
-  fs.mkdirSync(path.dirname(to), { recursive: true });
-  fs.writeFileSync(to, header('brand/tokens.css').replace('// COPIA', '/* COPIA').replace(/\n$/, ' */\n') + css);
-  console.log('  ', path.relative(root, to));
-}
+// 4. Los tokens de marca no se copian: la landing importa brand/tokens.css, que llega con `npm run diseno:sync`.
 
 // 5. La documentación de diseño (DESIGN.md y brand/) no se copia acá: está en los dos repos y
 //    `npm run diseno:sync` la sincroniza en los dos sentidos (brand/tools/sync-diseno.mjs).

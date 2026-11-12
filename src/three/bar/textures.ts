@@ -2,8 +2,8 @@ import { CanvasTexture, RepeatWrapping, SRGBColorSpace } from 'three';
 import { drawCharacter, lookFor, W, H } from '../../game/characters.js';
 import { CARD, SCENE } from '../../game/theme.js';
 
-// La misma familia que FONT de theme.js, con el nombre con que la registra fontsource (autoalojada).
-export const CANVAS_FONT = "'Archivo Variable', 'Archivo', system-ui, sans-serif";
+// La familia de la marca (brand/tokens.css), con el nombre con que la registra fontsource (autoalojada).
+export const CANVAS_FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif";
 
 /** Textura de canvas con el espacio de color correcto. Crearla con useMemo, una vez por componente. */
 export function canvasTexture(

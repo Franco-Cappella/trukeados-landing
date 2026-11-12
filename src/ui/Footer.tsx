@@ -19,7 +19,7 @@ export function Footer() {
         <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">
           CC BY-SA 3.0
         </a>
-        , vectorizadas por gjenkins20. Tipografía: Archivo, de Omnibus-Type (OFL).
+        , vectorizadas por gjenkins20. Tipografía: Hanken Grotesk, de Hanken Design Co. (OFL).
       </p>
     </footer>
   );

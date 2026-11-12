@@ -44,7 +44,6 @@
   background: rgb(18 18 18 / 0.9); /* --panel del juego */
   color: var(--text);
   font-family: var(--font);
-  font-stretch: var(--narrow);
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 0.04em;
@@ -95,7 +94,6 @@
 
 .nav__links a {
   color: var(--text-dim);
-  font-stretch: var(--narrow);
   font-weight: 650;
   font-size: var(--fs-small);
   letter-spacing: var(--track-label);
@@ -154,7 +152,6 @@ footer {
 
 .panel h1 {
   margin: 0;
-  font-stretch: var(--wide);
   font-weight: 850;
   /* Con el texto al 100 % no cambia nada (en 390 da unos 54 px y el tope en vw, 62); con el texto al 200 %
      evita que "verdad." se salga de la columna. */
@@ -166,7 +163,6 @@ footer {
 
 .panel h2 {
   margin: 0;
-  font-stretch: var(--semi-wide);
   font-weight: 800;
   font-size: min(var(--fs-title), 3.5rem, 12vw); /* dos líneas como máximo; 12vw: texto al 200 % en celular */
   overflow-wrap: break-word;
@@ -309,7 +305,6 @@ footer {
 
 .nombre__campo span {
   color: var(--text-dim);
-  font-stretch: var(--narrow);
   font-weight: 650;
   font-size: var(--fs-small);
 }
@@ -421,7 +416,6 @@ footer {
   background: none;
   color: var(--text-dim);
   font: inherit;
-  font-stretch: var(--narrow);
   font-weight: 650;
   font-size: var(--fs-small);
   text-decoration: underline;

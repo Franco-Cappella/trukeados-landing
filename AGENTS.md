@@ -11,7 +11,6 @@ Se copia con `npm run sync` (lee `../TRUKEADOS`, o la ruta que se pase):
 - `src/game/barrio-chino.js`, `paisaje.js`, `draw3d.js`: la calle del Barrio Chino. `models.js` y
   `public/models/gato-melon.glb`: el Gato Melón.
 - `public/brand/`: logos SVG.
-- `src/styles/tokens.css`: tokens de marca, sin el `@import` de Google Fonts.
 - `brand/` y `DESIGN.md`: documentación de diseño, igual que en TRUKEADOS (`npm run diseno:sync`, ver DESIGN.md).
 
 Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
@@ -19,11 +18,11 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 ## Reglas
 
 - La skill que manda es `web-inmersiva` (nivel 3, mundo de scroll). Cada cambio se revisa antes de cerrarlo; el contrato y su estado están en `docs/CONTRATO.md`.
-- Marca: `brand/PAGINAS.md` y `brand/BRAND.md`. Colores y medidas en CSS, solo desde `tokens.css`.
+- Marca: `brand/PAGINAS.md` y `brand/BRAND.md`. Colores y medidas en CSS, solo desde `brand/tokens.css`.
   En JS, desde `src/game/theme.js` (espejo de los tokens).
 - Textos en español rioplatense, con voseo. No inventar métricas, testimonios, logos de clientes ni citas:
   marcar `TODO(contenido)` y preguntar.
-- Sin CDN: fuentes (`@fontsource-variable/archivo`), modelos y pósters, todo local.
+- Sin CDN: fuentes (`@fontsource-variable/hanken-grotesk`), modelos y pósters, todo local.
 - El 3D nunca es el LCP. La landing se lee, y la CTA funciona, sin 3D ni animación.
 - Con movimiento reducido, la escena se muestra en su estado final sin recorrido.
 - Los commits solo se hacen cuando lo pide la persona.
