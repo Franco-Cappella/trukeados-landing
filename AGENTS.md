@@ -12,7 +12,8 @@ Se copia con `npm run sync` (lee `../truco3D`, o la ruta que se pase):
   `public/models/gato-melon.glb`: el Gato Melón.
 - `public/brand/`: logos SVG.
 - `src/styles/tokens.css`: tokens de marca, sin el `@import` de Google Fonts.
-- `docs/brand/`: documentación de marca para leer.
+- `brand/`, `DESIGN.md` y `docs/landing/`: documentación de diseño. Es la misma que en TRUKEADOS: se edita en
+  cualquiera de los dos y se sincroniza con `npm run diseno:sync` (ver DESIGN.md).
 
 Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 
@@ -20,7 +21,7 @@ Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 
 - La skill que manda es `web-inmersiva` (nivel 3, mundo de scroll). El trabajo va por fases con checkpoint:
   ver `docs/CONTRATO.md`.
-- Marca: `docs/brand/PAGINAS.md` y `docs/brand/BRAND.md`. Colores y medidas en CSS, solo desde `tokens.css`.
+- Marca: `brand/PAGINAS.md` y `brand/BRAND.md`. Colores y medidas en CSS, solo desde `tokens.css`.
   En JS, desde `src/game/theme.js` o `src/three/bar/palette.ts` (espejos de los tokens).
 - Textos en español rioplatense, con voseo. No inventar métricas, testimonios, logos de clientes ni citas:
   marcar `TODO(contenido)` y preguntar.

@@ -58,10 +58,7 @@ for (const f of fs.readdirSync(need(path.join(game, 'brand', 'logo')))) {
   console.log('  ', path.relative(root, to));
 }
 
-// 5. Documentación de marca, para leer al diseñar
-for (const f of ['BRAND.md', 'COMPONENTES.md', 'RECURSOS.md', 'VOZ.md', 'PAGINAS.md']) {
-  copy(path.join(game, 'brand', f), out('docs', 'brand', f));
-}
-copy(path.join(game, 'DESIGN.md'), out('docs', 'brand', 'DESIGN.md'));
+// 5. La documentación de diseño (DESIGN.md, brand/ y docs/landing/) no se copia acá: está en los dos repos y
+//    `npm run diseno:sync` la sincroniza en los dos sentidos (brand/tools/sync-diseno.mjs).
 
 console.log('Listo.');

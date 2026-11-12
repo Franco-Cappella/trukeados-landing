@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "capture": "node scripts/capture.mjs",
-    "encuadres": "node scripts/encuadres.ts"
+    "encuadres": "node scripts/encuadres.ts",
+    "diseno:sync": "node brand/tools/sync-diseno.mjs"
   },
   "engines": {
     "node": ">=22"

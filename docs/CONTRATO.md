@@ -79,7 +79,7 @@ cara. El nombre todavía no viaja al juego; para eso hace falta el cambio `?nomb
 ## 4. Biblia de estilo
 
 > **Pendiente de migrar (2026-11-12).** La marca pasó a **blanco y negro, grotesk** (Hanken Grotesk, negro, blanco y
-> grises, botón principal blanco, rojo solo para errores, esquinas de 2 px; ver `docs/brand/DESIGN.md`). Esta biblia y
+> grises, botón principal blanco, rojo solo para errores, esquinas de 2 px; ver `DESIGN.md`). Esta biblia y
 > el código de la landing todavía describen el sistema anterior (Archivo, oro, paño como campo de color). La lista de
 > cambios está en `brand/ALINEACION.md` §2 del juego. Hasta migrar, lo de abajo describe la landing tal como está.
 
@@ -252,7 +252,7 @@ aislados de unos 100 ms, que pueden notarse como un salto).
     Medido en 1440, 390 y 844 x 390: ninguna placa tapada.
   - La selección de texto es oro con tinta oscura, como los botones.
 - Excepción registrada en `.impeccable/config.json`: `side-tab` solo en `src/styles/landing.css`. Es el borde de
-  equipo de la placa de nombre, que define `docs/brand/COMPONENTES.md` §6. El detector queda en cero hallazgos.
+  equipo de la placa de nombre, que define `brand/COMPONENTES.md` §6. El detector queda en cero hallazgos.
 - Landing cerrada. Queda fuera de esta fase: probar en un celular real (INP y picos al redibujar personajes),
   definir `VITE_GAME_URL` y `VITE_SITE_URL` (dominio), y la decisión del juego (merge de `marca-y-landing` y
   `docs/landing/PLAN.md`).
@@ -263,7 +263,7 @@ aislados de unos 100 ms, que pueden notarse como un salto).
   dentro de `(hover: hover) and (pointer: fine)`, con su versión de movimiento reducido aparte. Contradice
   `brand/PAGINAS.md` §4 y `brand/BRAND.md` (sin brillos ni degradés en botones) y el cliché 2 de esta biblia; por
   eso queda como excepción documentada.
-- Pendiente en el juego, porque `docs/brand` se sincroniza y no se edita desde la landing: agregar la excepción en
+- Pendiente en la documentación (se edita en TRUKEADOS o acá, y `npm run diseno:sync` la pasa al otro repo): agregar la excepción en
   `brand/PAGINAS.md` §4 y `brand/BRAND.md`, y el token `--oro-hover` en `brand/tokens.css` (lo propone
   `brand/ALINEACION.md` §4). Hoy el hover usa `#f5cc4f` escrito a mano en `base.css`.
 - Sin verificar en el navegador todavía: el botón grande (`btn--big`), el foco por teclado y el recorrido en 768 y

@@ -10,7 +10,7 @@
           "src/styles/landing.css"
         ],
         "createdAt": "2026-11-07T05:11:45.345Z",
-        "reason": "Agent: borde de equipo de la placa de nombre, definido por docs/brand/COMPONENTES.md §6"
+        "reason": "Agent: borde de equipo de la placa de nombre, definido por brand/COMPONENTES.md §6"
       }
     ]
   }

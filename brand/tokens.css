@@ -1,0 +1,115 @@
+/* Trukeados — tokens de marca: blanco y negro, grotesk (desde noviembre 2026)
+   Salen del juego: :root de public/css/truco.css y public/js/theme.js. Ver brand/BRAND.md.
+   Las páginas derivadas (landing, reglas, prensa) importan este archivo tal cual.
+   Los nombres del juego (--bg, --surface, --text, --accent…) se mantienen iguales.
+   La interfaz es negro, blanco y grises; el color lo ponen las cartas, los personajes y la mesa 3D.
+   La fuente no se carga acá: cada página la trae (brand/BRAND.md §4). */
+
+:root {
+  /* ---------------------------------------------------------------- neutros */
+  --bg: #0a0a0a;          /* fondo principal */
+  --surface: #141414;     /* un escalón arriba */
+  --surface-2: #1f1f1f;   /* dos escalones */
+  --surface-3: #2a2a2a;   /* hover / tercer nivel */
+  --text: #f4f4f4;        /* tinta principal (también el "papel" en fondo claro) */
+  --text-hi: #ffffff;
+  --text-dim: #a8a8a8;    /* texto secundario (8.3:1 sobre --bg) */
+  --muted: #757575;       /* notas y créditos no esenciales (4.3:1 sobre --bg: no llega a AA; nunca en --surface-2) */
+  --text-on-light: #0a0a0a;
+  --line: rgba(255, 255, 255, 0.1);    /* bordes de interfaz y campos de formulario */
+  --line-2: rgba(255, 255, 255, 0.22);
+
+  /* ---------------------------------------------------------------- usos */
+  --accent: #ffffff;      /* EL acento es el blanco: botón principal blanco con letra negra */
+  --accent-ink: #0a0a0a;  /* texto sobre el acento */
+  --accent-hover: #d6d6d6;
+  --team0: #ffffff;       /* "nosotros" */
+  --team1: #8c8c8c;       /* "ellos" (5.9:1 sobre --bg) */
+  --red: #ff5a4f;         /* el único color de interfaz: errores, trampa, peligro (6.4:1 sobre --bg) */
+  --good-line: #ffffff;
+  --good-ink: #ffffff;
+  --good-bg: rgba(255, 255, 255, 0.12);
+  --bad-line: var(--red);
+  --bad-ink: #ffb0aa;
+  --bad-bg: rgba(255, 90, 79, 0.16);
+  --focus: #ffffff;
+  --shade: rgba(0, 0, 0, 0.74);       /* fondo de diálogos */
+
+  /* ---------------------------------------------------------------- escena (solo imágenes y 3D; nunca interfaz) */
+  --pano: #27523e;        /* paño de la mesa por defecto, centro (SCENE.felt en theme.js) */
+  --pano-2: #204534;
+  --pano-3: #1a4529;      /* paño, borde */
+
+  /* ---------------------------------------------------------------- heredados (la landing todavía los usa; no usar en nada nuevo) */
+  --oro: var(--accent);   /* era #f2c12e: ahora el acento es el blanco */
+  --espada: #d9d9d9;      /* los palos ya no son colores de interfaz (truco.css: --blue, --green, --yellow) */
+  --basto: #ffffff;
+  --copa: var(--red);
+  --blue: var(--espada);
+  --green: var(--basto);
+  --yellow: var(--oro);
+  --espada-tinta: var(--team0);
+  --basto-tinta: var(--good-ink);
+  --oro-tinta: var(--accent);
+  --copa-tinta: var(--bad-ink);
+
+  /* ---------------------------------------------------------------- tipografía: una sola familia */
+  --font: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --track: 0.08em;        /* mayúsculas de rótulos y botones */
+  /* Hanken Grotesk no tiene eje de ancho: los anchos quedan en 100 % para que nada heredado se rompa */
+  --wide: 100%;
+  --semi-wide: 100%;
+  --normal: 100%;
+  --narrow: 100%;
+  --condensed: 100%;
+
+  /* escala (fluida, 5 tamaños por página como máximo) */
+  --fs-display: clamp(3.25rem, 1.6rem + 7.4vw, 9.5rem);  /* 52 → 152 px */
+  --fs-title: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);    /* 36 → 72 px */
+  --fs-canto: clamp(1.75rem, 1.3rem + 2vw, 3rem);        /* 28 → 48 px */
+  --fs-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);   /* 20 → 26 px */
+  --fs-body: 1.125rem;    /* 18 px */
+  --fs-small: 0.9375rem;  /* 15 px */
+  --fs-micro: 0.8125rem;  /* 13 px: créditos legales y nada más */
+
+  --lh-display: 0.92;
+  --lh-title: 0.95;
+  --lh-body: 1.55;
+  --track-display: -0.04em;
+  --track-title: -0.035em;
+  --track-label: var(--track);
+
+  /* ---------------------------------------------------------------- forma */
+  --radius: 2px;          /* botones, campos, paneles: rectos, como en el juego */
+  --radius-naipe: 6.5%;   /* esquina de las cartas (proporción del naipe) */
+  --naipe-ratio: 512 / 788;
+
+  /* ---------------------------------------------------------------- espacio (base 8) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 9rem;
+  --gutter: clamp(1rem, 0.5rem + 2vw, 2rem);         /* margen exterior de página */
+  --section-gap: clamp(6rem, 4rem + 8vw, 13rem);      /* entre secciones de página */
+  --measure: 62ch;
+
+  /* ---------------------------------------------------------------- movimiento: "arranca rápido y se asienta" */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-press: 120ms;     /* botones */
+  --dur-quick: 180ms;     /* globos, hover */
+  --dur-move: 420ms;      /* carta que vuela, entradas */
+  --dur-sena: 2200ms;     /* cuánto dura una seña (SENA_MS) */
+
+  /* botones (los del juego, grandes para tocar fácil) */
+  --btn-font: 15px;       /* en mayúsculas con --track */
+  --btn-pad: 12px 20px;
+  --btn-min-h: 46px;
+  --btn-call-font: 20px;  /* cantos: sin mayúsculas */
+}
