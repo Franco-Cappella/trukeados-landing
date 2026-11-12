@@ -6,7 +6,7 @@ export function Nav() {
   return (
     <header className="nav">
       <a className="nav__logo" href="#inicio">
-        <img src="/brand/logo-horizontal.svg" alt="Trukeados" width={214} height={28} />
+        <img src="/brand/logo-horizontal-mono-blanco.svg" alt="Trukeados" width={214} height={28} />
       </a>
       <nav className="nav__links" aria-label="Secciones">
         {site.nav.map((l) => (

@@ -7,7 +7,9 @@ export function Footer() {
   const toggleNo3d = useUI((s) => s.toggleNo3d);
   return (
     <footer className="pie">
-      <img className="pie__palabra" src="/brand/palabra.svg" alt={site.name} width={835} height={69} loading="lazy" />
+      <p className="pie__palabra">
+        Truke<span>ados</span>
+      </p>
       <div className="pie__fila">
         <p>{site.tagline}</p>
         <button type="button" className="pie__boton" onClick={toggleNo3d} aria-pressed={no3d}>
