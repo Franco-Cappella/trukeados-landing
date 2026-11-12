@@ -1,6 +1,6 @@
 // Capturas con Chrome o Edge reales (WebGL por SwiftShader, funciona sin GPU).
 // Uso: `npm run build && npm run preview` en otra terminal, y después `npm run capture -- <set>`.
-//   sets: estudios (los 3 estudios de dirección) · landing (escritorio, celular, secciones y versión sin 3D)
+//   sets: landing (escritorio, celular, secciones y versión sin 3D)
 //         director (cada sección al final de su tramo en 1440, 768 y 390, y la prueba de ida, vuelta y saltos:
 //         el estado de la escena tiene que coincidir con el esperado en cada sección)
 //         posters (la escena de cada sección sin el texto, en WebP: los pósters de la versión sin 3D)
@@ -18,11 +18,6 @@ const base = process.env.BASE ?? 'http://localhost:4173';
 const PORT = 9341;
 
 const SETS = {
-  estudios: [
-    { path: '/?estudio=a', file: 'estudios/estudio-a.png' },
-    { path: '/?estudio=b', file: 'estudios/estudio-b.png' },
-    { path: '/?estudio=c', file: 'estudios/estudio-c.png' },
-  ],
   landing: [
     { path: '/', file: 'capturas/escritorio-inicio.png' },
     { path: '/', file: 'capturas/escritorio-senas.png', section: 'senas' },
@@ -41,7 +36,7 @@ const VIEWPORTS = [
   { name: 'celular', w: 390, h: 844, mobile: true },
 ];
 
-const set = process.argv[2] ?? 'estudios';
+const set = process.argv[2] ?? 'landing';
 const shots = ['director', 'posters', 'og'].includes(set) ? [] : SETS[set];
 if (!shots) throw new Error(`Set desconocido: ${set}. Opciones: ${Object.keys(SETS).join(', ')}`);
 

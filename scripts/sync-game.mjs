@@ -58,7 +58,7 @@ for (const f of fs.readdirSync(need(path.join(game, 'brand', 'logo')))) {
   console.log('  ', path.relative(root, to));
 }
 
-// 5. La documentación de diseño (DESIGN.md, brand/ y docs/landing/) no se copia acá: está en los dos repos y
+// 5. La documentación de diseño (DESIGN.md y brand/) no se copia acá: está en los dos repos y
 //    `npm run diseno:sync` la sincroniza en los dos sentidos (brand/tools/sync-diseno.mjs).
 
 console.log('Listo.');

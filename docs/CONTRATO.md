@@ -1,7 +1,6 @@
 # Landing de Trukeados: contrato
 
-Fase 2 de la skill `web-inmersiva`: brief, nivel, mapa de secciones, biblia de estilo y tres estudios de
-dirección.
+Fase 2 de la skill `web-inmersiva`: brief, nivel, mapa de secciones, biblia de estilo.
 
 **Aprobado el 2026-11-06.** Dirección elegida: **A como mundo, con momentos de C y de B** (sección 5).
 El juego está en `https://game.trukeados.com` y la landing en `https://trukeados.com` (2026-11-07).
@@ -96,50 +95,9 @@ todavía no aplica esos valores: ver [brand/ALINEACION.md](brand/ALINEACION.md) 
 - **Texto sobre la escena**: sobre una sombra neutra (degradé de `--bg`, la única excepción que permite la marca), con
   contraste de 4,5:1 o más. En celular, el texto va abajo y la escena arriba.
 
-## 5. Estudios de dirección
+## 5. Dirección elegida
 
-Los tres usan el mismo bar, armado con las medidas del juego. Cambian la cámara, la luz, la composición y la
-relación entre texto y escena. Se ven en `npm run dev`, en `/?estudio=a`, `/?estudio=b` y `/?estudio=c`.
-
-### A · La puerta
-
-![Estudio A](estudios/estudio-a.png)
-
-- **Cámara**: de pie, de frente y alta. La mesa al centro, con tu silla vacía adelante.
-- **Luz**: la lámpara como única luz cálida; las paredes en penumbra.
-- **Composición**: la sala arriba y el título abajo, sobre sombra.
-- **Recorrido**: entra desde la puerta, rodea la mesa en las señas y termina sentado en tu silla, que es la
-  vista del juego.
-- **A favor**: es el lugar, y termina justo donde empieza el juego.
-- **En contra**: al principio las caras se ven chicas, y carga más 3D (la sala entera).
-
-### B · Desde arriba
-
-![Estudio B](estudios/estudio-b.png)
-
-- **Cámara**: cenital, sin sala.
-- **Luz**: pareja y gráfica.
-- **Composición**: el paño como tablero a la derecha, el texto a la izquierda sobre el fondo de la marca.
-- **Recorrido**: la cámara baja y gira sobre la mesa; las cartas se reparten y se juegan; las caras son fichas
-  que cambian de seña.
-- **A favor**: es el más legible y el más liviano, y explica reglas (la trampa, la jerarquía) con claridad.
-- **En contra**: se pierden el bar y la primera persona. Es el menos inmersivo.
-
-### C · Caras
-
-![Estudio C](estudios/estudio-c.png)
-
-- **Cámara**: a la altura de la cara de un jugador, con el resto a oscuras.
-- **Luz**: de contorno, cálida y desde atrás.
-- **Composición**: la cara a la derecha, el texto a la izquierda.
-- **Recorrido**: cortes de cara en cara, una seña por scroll. Al final la cámara se aleja y aparece la mesa.
-- **A favor**: la mecánica de las señas es la protagonista, y es muy humano.
-- **En contra**: depende de un dibujo 2D muy grande (se nota que es plano) y da menos sensación de lugar.
-
-### Recomendación
-
-**A como mundo, con momentos de C y de B**: un solo bar y una sola cámara continua, como pide el nivel 3. Las señas usan
-el primer plano de C; la trampa baja a la vista cenital de B; el final se sienta en tu silla.
+Se hicieron tres estudios del mismo bar: de pie en la puerta (A), primer plano de las caras (C) y vista cenital de la mesa (B). Se eligió **A como mundo, con momentos de C y de B**: un solo bar y una sola cámara continua, como pide el nivel 3. Las señas usan el primer plano de C; la trampa baja a la vista cenital de B; el final se sienta en tu silla. Los estudios ya no están en el código.
 
 ## 6. Estado técnico
 
@@ -174,14 +132,7 @@ el primer plano de C; la trampa baja a la vista cenital de B; el final se sienta
 
 ## 7. Fases
 
-| Fase | Estado |
-|---|---|
-| 3. Base | Hecha |
-| 4. Esqueleto HTML | Hecha |
-| 5. Director de scroll y escena gris | Hecha |
-| 6. Escenas definitivas: el bar, las señas, la mirada, la trampa, las mesas y la silla | Hecha |
-| 7. Efectos, niveles de calidad y respaldos: el instante dorado de "te mira", niveles de calidad, pósters de la versión sin 3D, entrada de la escena, celular acostado | Hecha |
-| 8. Verificación y entrega: build, recorrido en 390, 768 y 1440, Lighthouse móvil, `impeccable` y `vercel-react-best-practices` | Hecha |
+Cerrada el 2026-11-07. Las fases 3 a 8 están hechas. Lo que queda para publicar, en [brand/ALINEACION.md](brand/ALINEACION.md) §5.
 
 ### Verificación (fase 8)
 
@@ -225,9 +176,7 @@ aislados de unos 100 ms, que pueden notarse como un salto).
   - La selección de texto es dorada con tinta oscura, como los botones; la migración la cambia (ALINEACION §2).
 - Excepción registrada en `.impeccable/config.json`: `side-tab` solo en `src/styles/landing.css`. Es el borde de
   equipo de la placa de nombre, que define `brand/COMPONENTES.md` §6. El detector queda en cero hallazgos.
-- Landing cerrada. Queda fuera de esta fase: probar en un celular real (INP y picos al redibujar personajes),
-  definir `VITE_GAME_URL` y `VITE_SITE_URL` (dominio), y la decisión del juego (merge de `marca-y-landing` y
-  `docs/landing/PLAN.md`).
+- Landing cerrada el 2026-11-07. Lo que queda para publicar, en [brand/ALINEACION.md](brand/ALINEACION.md) §5.
 
 ### Después del cierre
 

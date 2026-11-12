@@ -188,7 +188,7 @@ footer {
   margin-top: var(--space-6);
 }
 
-/* Inicio y sentate: la escena arriba y el texto abajo (estudio A). El recorrido termina como empezó, con la
+/* Inicio y sentate: la escena arriba y el texto abajo. El recorrido termina como empezó, con la
    vista del juego entera. El título del inicio va en una línea a todo el ancho. */
 .section--inicio .section__sticky,
 .section--sentate .section__sticky {

@@ -1,14 +1,13 @@
 // Piezas del bar: sala, lámpara, mesa, sillas, personajes, caras y cartas. Mismas medidas que el juego.
-import { useLayoutEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
+import { } from '@react-three/fiber';
 import {
   BackSide,
   DoubleSide,
   Euler,
   ExtrudeGeometry,
   LatheGeometry,
-  PerspectiveCamera,
   Shape,
   ShapeGeometry,
   SRGBColorSpace,
@@ -32,20 +31,6 @@ const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
 /** Plano apoyado en la mesa con su "arriba" hacia `angle` (igual que el juego al girar el objeto). */
 export const tiltUp = (angle: number) => new Euler(-Math.PI / 2, angle, 0, 'YXZ');
-
-/** Pone la cámara en una pose fija. Las escenas de estudio no se mueven: solo cambian de pose. */
-export function CameraPose({ position, target, fov }: { position: Vec3; target: Vec3; fov: number }) {
-  const camera = useThree((s) => s.camera);
-  useLayoutEffect(() => {
-    camera.position.set(...position);
-    if (camera instanceof PerspectiveCamera) {
-      camera.fov = fov;
-      camera.updateProjectionMatrix();
-    }
-    camera.lookAt(...target);
-  }, [camera, position, target, fov]);
-  return null;
-}
 
 /** Techo oscuro: tapa el borde de las paredes cuando la cámara está de pie. */
 export function Ceiling() {

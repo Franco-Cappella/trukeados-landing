@@ -12,16 +12,15 @@ Se copia con `npm run sync` (lee `../TRUKEADOS`, o la ruta que se pase):
   `public/models/gato-melon.glb`: el Gato Melón.
 - `public/brand/`: logos SVG.
 - `src/styles/tokens.css`: tokens de marca, sin el `@import` de Google Fonts.
-- `brand/`, `DESIGN.md` y `docs/landing/`: documentación de diseño, igual que en TRUKEADOS (`npm run diseno:sync`, ver DESIGN.md).
+- `brand/` y `DESIGN.md`: documentación de diseño, igual que en TRUKEADOS (`npm run diseno:sync`, ver DESIGN.md).
 
 Para cambiar algo de eso, se cambia en el juego y se vuelve a sincronizar.
 
 ## Reglas
 
-- La skill que manda es `web-inmersiva` (nivel 3, mundo de scroll). El trabajo va por fases con checkpoint:
-  ver `docs/CONTRATO.md`.
+- La skill que manda es `web-inmersiva` (nivel 3, mundo de scroll). Cada cambio se revisa antes de cerrarlo; el contrato y su estado están en `docs/CONTRATO.md`.
 - Marca: `brand/PAGINAS.md` y `brand/BRAND.md`. Colores y medidas en CSS, solo desde `tokens.css`.
-  En JS, desde `src/game/theme.js` o `src/three/bar/palette.ts` (espejos de los tokens).
+  En JS, desde `src/game/theme.js` (espejo de los tokens).
 - Textos en español rioplatense, con voseo. No inventar métricas, testimonios, logos de clientes ni citas:
   marcar `TODO(contenido)` y preguntar.
 - Sin CDN: fuentes (`@fontsource-variable/archivo`), modelos y pósters, todo local.
@@ -43,7 +42,7 @@ escribir "sin cuenta".
 - Publicación: Vercel, en cada push a `main` (`npm run build`, carpeta `dist/`; caché en `vercel.json`). El juego,
   aparte, en Cloudflare Workers.
 - `npm run sync`: copia lo que viene del juego.
-- `npm run capture -- estudios`, `landing` o `director`: capturas en `docs/estudios/` y `docs/capturas/`.
+- `npm run capture -- landing` o `director`: capturas en `docs/capturas/`.
   Requiere `npm run build && npm run preview` corriendo en el puerto 4173. `director` además prueba que la
   escena vuelva a su estado al ir, volver y saltar, con movimiento reducido y sin 3D: correrlo después de
   tocar cámaras, `weight` o efectos.
@@ -67,7 +66,6 @@ escribir "sin cuenta".
   `world/` (el recorrido: la mesa en la calle del Barrio Chino del juego, `street.ts`, con el paño bordó; los
   personajes, con el Gato Melón en 3D a tu derecha, `gato.ts`; y las cartas de la trampa), `bar/` (piezas del bar con las
   medidas del juego) y `gray/` (escena gris de la fase 5, con `?gris`).
-- `src/studies/`: los tres estudios de dirección (`?estudio=a|b|c`), en un paquete aparte.
 
 ## Al cerrar cualquier cambio de interfaz
 

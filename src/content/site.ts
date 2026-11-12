@@ -49,7 +49,7 @@ const sections: Section[] = [
     title: 'Truco de verdad.',
     body: ['Trukeados es truco argentino online, en 3D, en una mesa en pleno Barrio Chino. Gratis, en el navegador y en el celular.'],
     weight: 1.2,
-    // De pie en la puerta: la lámpara, la mesa y tu silla arriba; el título abajo (estudio A).
+    // De pie en la puerta: la lámpara, la mesa y tu silla arriba; el título abajo.
     camera: { position: [0, 2.0, 5.0], target: [0, 1.3, 0], fov: 50, frame: [0, 0.12] },
     cameraPortrait: { position: [0, 2.2, 5.6], target: [0, 1.4, 0], fov: 66, frame: [0, 0.2] },
     fx: {},
@@ -77,7 +77,7 @@ const sections: Section[] = [
     title: 'Las señas se hacen con la cara.',
     body: ['Once señas: cejas arriba, el ancho de espada; un guiño, el de basto; la boca torcida, un siete.'],
     weight: 2,
-    // Primer plano de Cacho, enfrente (estudio C). El resto sigue a oscuras.
+    // Primer plano de Cacho, enfrente. El resto sigue a oscuras.
     camera: { position: [0.22, 1.47, 0], target: [0, 1.425, -1.25], fov: 32, frame: [0.22, 0] },
     cameraPortrait: { position: [0.06, 1.47, 0.38], target: [0, 1.425, -1.25], fov: 50 },
     fxIn: { closeup: 1 },
@@ -108,7 +108,7 @@ const sections: Section[] = [
       'Cualquier rival te puede pedir que muestres las dos.',
     ],
     weight: 1.5,
-    // Baja casi a pique sobre tus cartas jugadas (vista cenital del estudio B).
+    // Baja casi a pique sobre tus cartas jugadas (vista cenital).
     camera: { position: [0.1, 1.42, 0.98], target: [0, 0.745, 0.589], fov: 38 },
     cameraPortrait: { position: [0.034, 1.33, 0.973], target: [0, 0.745, 0.589], fov: 56, frame: [0, 0.22] },
     fxIn: { gaze: 0, played: 1 },
