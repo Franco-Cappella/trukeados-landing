@@ -102,7 +102,7 @@ async function posters() {
 }
 
 // La imagen para compartir (Open Graph): la primera pantalla tal cual, con el título y el botón. Y el ícono
-// de inicio de iOS, que no acepta SVG: el de la app sobre el fondo de la marca, sin esquinas transparentes.
+// de inicio de iOS, que no acepta SVG: el favicon del juego (ya trae el fondo de la marca, sin esquinas).
 async function og() {
   errors.length = 0;
   await send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
@@ -114,11 +114,11 @@ async function og() {
   console.log(`og.jpg · ${Math.round(fs.statSync(file).size / 1024)} KB`);
 
   await send('Emulation.setDeviceMetricsOverride', { width: 180, height: 180, deviceScaleFactor: 1, mobile: false });
-  await send('Page.navigate', { url: base + '/brand/icono-app.svg' });
+  await send('Page.navigate', { url: base + '/favicon.svg' });
   await sleep(800);
-  await evaluate(`document.documentElement.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg') || '#121212';
+  await evaluate(`document.documentElement.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg') || '#0a0a0a';
     const svg = document.querySelector('svg'); svg.setAttribute('width', 180); svg.setAttribute('height', 180);
-    svg.querySelector('rect').setAttribute('rx', 0)`);
+    svg.querySelector('rect').removeAttribute('rx')`);
   await sleep(300);
   r = await send('Page.captureScreenshot', { format: 'png' });
   fs.writeFileSync(path.join(root, 'public', 'apple-touch-icon.png'), Buffer.from(r.result.data, 'base64'));

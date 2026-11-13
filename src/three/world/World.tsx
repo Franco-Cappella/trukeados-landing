@@ -192,7 +192,7 @@ export function World() {
     });
     redraw(actors, needs);
 
-    // Sentado: aparecen las placas de nombre del juego con "te mira" en oro. Es el instante dorado.
+    // Sentado: aparecen las placas de nombre del juego con "te mira". Es el instante en que alguien te mira.
     const plate = smoothstep(fx.seated, 0.55, 0.95);
     const { width: w, height: h } = state.size;
     PLATES.forEach((who, k) => {

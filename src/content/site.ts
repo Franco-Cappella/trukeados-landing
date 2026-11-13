@@ -155,7 +155,7 @@ export const site = {
   name: 'Trukeados',
   tagline: 'Truco argentino online, en 3D.',
   cta: { primary: 'Jugar ahora', secondary: 'Practicar con bots' },
-  /** Placa de nombre del juego (la que va arriba de cada jugador): el chip en oro cuando alguien te mira. */
+  /** Placa de nombre del juego (la que va arriba de cada jugador): el chip «te mira» cuando alguien te mira. */
   teMira: 'te mira',
   nav: [
     { id: 'senas', label: 'Señas' },

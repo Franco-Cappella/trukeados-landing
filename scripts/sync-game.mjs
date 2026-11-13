@@ -46,6 +46,8 @@ copy(path.join(game, 'public', 'models', 'gato-melon.glb'), out('public', 'model
 for (const f of fs.readdirSync(need(path.join(game, 'brand', 'logo')))) {
   if (f.endsWith('.svg')) copy(path.join(game, 'brand', 'logo', f), out('public', 'brand', f));
 }
+// El favicon del juego (blanco y negro): ícono de la pestaña y base del ícono de iOS (npm run capture -- og).
+copy(path.join(game, 'public', 'favicon.svg'), out('public', 'favicon.svg'));
 
 // 4. Los tokens de marca no se copian: la landing importa brand/tokens.css, que llega con `npm run diseno:sync`.
 
